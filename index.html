@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Abhijith & Reshma — Wedding Invitation | 20 December 2026</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ivory: '#FAF6EE',
+                        champagne: '#F4EDE0',
+                        parchment: '#FDFBF7',
+                        gold: {
+                            light: '#E6C987',
+                            DEFAULT: '#C59B27',
+                            dark: '#8F6B14',
+                            brass: '#D4AF37'
+                        },
+                        keralaGreen: {
+                            light: '#4E8B42',
+                            DEFAULT: '#2D5A34',
+                            deep: '#1B3B22'
+                        },
+                        espresso: '#2C1E14',
+                        taupe: '#6E5A4B',
+                        blush: '#ECC8C9',
+                        burgundy: '#6B242B'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        script: ['"Great Vibes"', 'cursive'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tone.js for Gentle Kerala Ambient Wedding Melody -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background-color: #FAF6EE;
+            color: #2C1E14;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Lock vertical scroll during STEP 1 & STEP 2 (before opening reveal completes) */
+        body.stage-locked {
+            overflow: hidden;
+            height: 100dvh;
+            touch-action: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF6EE;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2D5A34;
+            border-radius: 9999px;
+        }
+
+        /* Continuous Falling Jasmine & Lotus Petals Canvas */
+        #petalCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 60;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+        #petalCanvas.active {
+            opacity: 1;
+        }
+
+        /* =====================================================================
+           UNIFIED CINEMATIC CAMERA ZOOM-OUT ARCHITECTURE (STEPS 1 TO 5)
+           Instead of switching screens, the camera starts zoomed-in on the boat
+           close-up and smoothly pulls back to reveal the full Kerala setting.
+           ===================================================================== */
+        #cameraRig {
+            transition: transform 2.35s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-origin: 50% 39%;
+            will-change: transform;
+        }
+
+        /* Initial State: Close-Up on the Couple in the Boat */
+        #openingStage.is-closeup #cameraRig {
+            transform: scale(1.68) translateY(8%);
+        }
+
+        @media (min-width: 640px) {
+            #openingStage.is-closeup #cameraRig {
+                transform: scale(1.55) translateY(6%);
+            }
+        }
+
+        /* Revealed State: Camera Pulls Back to 1.0 Scale */
+        #openingStage.is-revealed #cameraRig {
+            transform: scale(1) translateY(0%);
+        }
+
+        /* Darkened vignette during close-up that lifts into warm ivory light on zoom-out */
+        #closeupVignette {
+            transition: opacity 2.1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #openingStage.is-closeup #closeupVignette {
+            opacity: 1;
+        }
+        #openingStage.is-revealed #closeupVignette {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Surrounding Kerala Decor Layers (Banana Leaves, Garlands, Nilavilakku)
+           Naturally outside the close-up lens, sliding/fading into frame as camera pulls back */
+        .kerala-surround-left {
+            transition: transform 2.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.9s ease;
+        }
+        .kerala-surround-right {
+            transition: transform 2.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.9s ease;
+        }
+        .kerala-surround-top {
+            transition: transform 2.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.9s ease;
+        }
+        .kerala-surround-lamps {
+            transition: transform 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.25s, opacity 1.8s ease 0.25s;
+        }
+
+        #openingStage.is-closeup .kerala-surround-left {
+            transform: translateX(-45%) scale(1.12);
+            opacity: 0.15;
+        }
+        #openingStage.is-closeup .kerala-surround-right {
+            transform: translateX(45%) scale(1.12);
+            opacity: 0.15;
+        }
+        #openingStage.is-closeup .kerala-surround-top {
+            transform: translateY(-40%) scale(1.1);
+            opacity: 0.12;
+        }
+        #openingStage.is-closeup .kerala-surround-lamps {
+            transform: translateY(25px) scale(0.9);
+            opacity: 0;
+        }
+
+        #openingStage.is-revealed .kerala-surround-left,
+        #openingStage.is-revealed .kerala-surround-right,
+        #openingStage.is-revealed .kerala-surround-top,
+        #openingStage.is-revealed .kerala-surround-lamps {
+            transform: translate(0, 0) scale(1);
+            opacity: 1;
+        }
+
+        /* STEP 5: Couple Names & Invitation Header Entrance Animation */
+        .names-reveal-block {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+        }
+        #openingStage.is-revealed .names-reveal-block {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Gentle Boat Rocking & Backwater Shimmer on the Centerpiece Scene */
+        @keyframes boatGentleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(0.35deg); }
+        }
+        @keyframes waterRippleShift {
+            0%, 100% { transform: translateX(-3%) scaleY(1); opacity: 0.55; }
+            50% { transform: translateX(3%) scaleY(1.08); opacity: 0.85; }
+        }
+        @keyframes sunbeamBreathe {
+            0%, 100% { opacity: 0.28; transform: scale(1); }
+            50% { opacity: 0.48; transform: scale(1.04); }
+        }
+
+        .boat-scene-motion {
+            animation: boatGentleFloat 6.5s ease-in-out infinite;
+        }
+        .water-ripple-anim {
+            animation: waterRippleShift 5s ease-in-out infinite;
+        }
+        .sunbeam-overlay {
+            animation: sunbeamBreathe 7s ease-in-out infinite;
+        }
+
+        /* Swaying Banana Leaves, Hanging Mullappoo Garlands & Nilavilakku Flame Glow */
+        @keyframes leafSwayLeft {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(1.8deg); }
+        }
+        @keyframes leafSwayRight {
+            0%, 100% { transform: scaleX(-1) rotate(0deg); }
+            50% { transform: scaleX(-1) rotate(1.8deg); }
+        }
+        @keyframes garlandSway {
+            0%, 100% { transform: rotate(-1.1deg); }
+            50% { transform: rotate(1.1deg); }
+        }
+        @keyframes flameFlicker {
+            0%, 100% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 8px rgba(255, 193, 7, 0.85)); }
+            50% { transform: scale(1.09, 1.14) rotate(1deg); filter: drop-shadow(0 0 16px rgba(255, 213, 79, 1)); }
+        }
+
+        .banana-sway-left {
+            transform-origin: bottom left;
+            animation: leafSwayLeft 6.5s ease-in-out infinite;
+        }
+        .banana-sway-right {
+            transform-origin: bottom right;
+            animation: leafSwayRight 7s ease-in-out infinite;
+        }
+        .toran-swing {
+            transform-origin: top center;
+            animation: garlandSway 5.5s ease-in-out infinite;
+        }
+        .nilavilakku-flame {
+            transform-origin: bottom center;
+            animation: flameFlicker 2.2s ease-in-out infinite;
+        }
+
+        /* Shimmering "ENTER THE WEDDING" Button */
+        @keyframes kasavuButtonPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.55), 0 12px 32px -4px rgba(27, 59, 34, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(212, 175, 55, 0), 0 16px 40px -4px rgba(212, 175, 55, 0.55);
+            }
+        }
+        .enter-wedding-btn {
+            animation: kasavuButtonPulse 2.8s infinite;
+        }
+
+        /* Arched Photo Frame (Original Proportions Preserved) */
+        .arch-frame {
+            border-radius: 9999px 9999px 26px 26px;
+        }
+
+        /* ~80% Portrait Fit inside Original Arched Frame */
+        .couple-portrait-fit {
+            object-fit: cover;
+            object-position: center 20%;
+        }
+
+        /* Gold Foil Text Gradient */
+        .gold-foil-text {
+            background: linear-gradient(135deg, #8F6B14 0%, #D4AF37 48%, #9A7418 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Respect Reduced Motion Accessibility Preferences */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.3s !important;
+            }
+        }
+    </style>
+</head>
+<body class="stage-locked antialiased selection:bg-gold selection:text-white relative">
+
+    <!-- =====================================================================
+         0. SVG ARTWORK DEFINITIONS (LUSH BANANA LEAVES, JASMINE MULLAPPOO
+            GARLANDS, PINK LOTUS TORANS, BRASS NILAVILAKKU LAMPS & KERALA BOAT)
+         ===================================================================== -->
+    <svg class="hidden" aria-hidden="true">
+        <defs>
+            <!-- Deep Tropical Green Side Leaf Gradient -->
+            <linearGradient id="vazhayilaDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4E8B42" />
+                <stop offset="50%" stop-color="#2E6428" />
+                <stop offset="100%" stop-color="#193E17" />
+            </linearGradient>
+
+            <!-- Sunlit Lime-Yellow Highlighted Banana Leaf -->
+            <linearGradient id="vazhayilaSunlit" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#D4E157" />
+                <stop offset="45%" stop-color="#8BC34A" />
+                <stop offset="100%" stop-color="#387028" />
+            </linearGradient>
+
+            <!-- Mid-Tone Watercolor Green Banana Leaf -->
+            <linearGradient id="vazhayilaMid" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#255422" />
+                <stop offset="55%" stop-color="#559244" />
+                <stop offset="100%" stop-color="#9CCC65" />
+            </linearGradient>
+
+            <!-- Central Stem Cream-Green Gradient -->
+            <linearGradient id="leafMidrib" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#C5E1A5" />
+                <stop offset="100%" stop-color="#F1F8E9" />
+            </linearGradient>
+
+            <!-- Radiant Brass/Gold Gradient -->
+            <linearGradient id="brassGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFF59D" />
+                <stop offset="35%" stop-color="#FBC02D" />
+                <stop offset="70%" stop-color="#C58B14" />
+                <stop offset="100%" stop-color="#7E5109" />
+            </linearGradient>
+
+            <!-- Pink Lotus Gradient -->
+            <linearGradient id="lotusPink" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FCE4EC" />
+                <stop offset="55%" stop-color="#EC407A" />
+                <stop offset="100%" stop-color="#880E4F" />
+            </linearGradient>
+
+            <!-- Teakwood Kerala Vallam (Boat) Gradient -->
+            <linearGradient id="vallamWood" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6D4C3D" />
+                <stop offset="50%" stop-color="#4A3222" />
+                <stop offset="100%" stop-color="#2A1B12" />
+            </linearGradient>
+
+            <!-- 1. TALL CURVED DARK-GREEN BANANA LEAF BLADE -->
+            <g id="tallBananaBlade">
+                <path d="M 0,290 C -22,200 -42,95 18,0 C 52,78 44,195 0,290 Z" fill="url(#vazhayilaDark)" />
+                <path d="M 0,290 C 12,195 40,85 18,0 C 4,90 -4,195 0,290 Z" fill="url(#vazhayilaMid)" opacity="0.82" />
+                <path d="M 0,290 Q 6,145 18,2" stroke="url(#leafMidrib)" stroke-width="2.6" fill="none" stroke-linecap="round" />
+                <g stroke="#C5E1A5" stroke-width="0.75" opacity="0.5" fill="none">
+                    <path d="M 2,250 L -16,232" /><path d="M 3,225 L -22,204" /><path d="M 5,200 L -25,176" />
+                    <path d="M 6,175 L -26,148" /><path d="M 8,150 L -24,122" /><path d="M 10,125 L -20,96" />
+                    <path d="M 12,100 L -14,72" /><path d="M 14,75 L -6,50" /><path d="M 15,50 L 2,30" />
+                    <path d="M 2,240 L 22,222" /><path d="M 4,215 L 28,195" /><path d="M 6,190 L 32,168" />
+                    <path d="M 8,165 L 34,142" /><path d="M 10,140 L 35,116" /><path d="M 12,115 L 33,92" />
+                    <path d="M 14,90 L 30,68" /><path d="M 15,65 L 26,46" />
+                </g>
+            </g>
+
+            <!-- 2. SUNLIT YELLOW-GREEN UNFURLING BANANA LEAF -->
+            <g id="sunlitBananaBlade">
+                <path d="M 0,240 C -18,160 -25,70 12,0 C 38,65 32,160 0,240 Z" fill="url(#vazhayilaSunlit)" />
+                <path d="M 0,240 C 8,160 28,70 12,0 C 2,75 -3,160 0,240 Z" fill="#DCE775" opacity="0.55" />
+                <path d="M 0,240 Q 4,120 12,2" stroke="#FFF9C4" stroke-width="2.2" fill="none" stroke-linecap="round" />
+            </g>
+
+            <!-- 3. FULL VERTICAL SIDE ARRANGEMENT (Tall Layered Banana Leaves) -->
+            <g id="image2SidePillar">
+                <use href="#tallBananaBlade" transform="translate(8, 25) rotate(12) scale(1.12)" />
+                <use href="#sunlitBananaBlade" transform="translate(16, 48) rotate(22) scale(1.02)" />
+                <use href="#tallBananaBlade" transform="translate(-4, 95) rotate(32) scale(1.18)" />
+                <use href="#sunlitBananaBlade" transform="translate(2, 185) rotate(14) scale(0.95)" />
+                <use href="#tallBananaBlade" transform="translate(-8, 210) rotate(38) scale(1.1)" />
+                <use href="#tallBananaBlade" transform="translate(12, 260) rotate(22) scale(0.92)" />
+            </g>
+
+            <!-- 4. PINK LOTUS, JASMINE (MULLAPPOO) & GOLDEN BELL HANGING TORAN -->
+            <g id="pinkLotus">
+                <path d="M -11,4 Q 0,10 11,4 L 7,8 Q 0,12 -7,8 Z" fill="#43A047" />
+                <path d="M 0,5 C -13,5 -18,-5 -12,-13 C -6,-9 -3,-2 0,5 Z" fill="url(#lotusPink)" />
+                <path d="M 0,5 C 13,5 18,-5 12,-13 C 6,-9 3,-2 0,5 Z" fill="url(#lotusPink)" />
+                <path d="M 0,4 C -9,1 -11,-10 -6,-16 C -2,-11 -1,-4 0,4 Z" fill="#F06292" />
+                <path d="M 0,4 C 9,1 11,-10 6,-16 C 2,-11 1,-4 0,4 Z" fill="#F06292" />
+                <path d="M 0,4 C -5,-3 -5,-13 0,-19 C 5,-13 5,-3 0,4 Z" fill="#F8BBD0" />
+            </g>
+            <g id="goldDiamond">
+                <polygon points="0,-8 7,0 0,8 -7,0" fill="url(#brassGold)" />
+                <circle cx="0" cy="0" r="2" fill="#FFFDE7" />
+            </g>
+            <g id="goldBell">
+                <path d="M -4,-7 L 4,-7 L 6,-1 C 8,4 10,8 11,11 L -11,11 C -10,8 -8,4 -6,-1 Z" fill="url(#brassGold)" />
+                <ellipse cx="0" cy="11" rx="11" ry="2.8" fill="#7E5109" />
+                <circle cx="0" cy="14" r="2.8" fill="#FFF59D" />
+            </g>
+
+            <!-- 5. JASMINE (MULLAPPOO) BUD CLUSTER FOR HANGING GARLANDS -->
+            <g id="mullappooCluster">
+                <ellipse cx="-3" cy="-3" rx="3.2" ry="5" fill="#FFFDF9" stroke="#E5C888" stroke-width="0.6" transform="rotate(-18)" />
+                <ellipse cx="3" cy="-3" rx="3.2" ry="5" fill="#FFFDF9" stroke="#E5C888" stroke-width="0.6" transform="rotate(18)" />
+                <ellipse cx="0" cy="0" rx="3.5" ry="5.5" fill="#FFFFFF" stroke="#D4AF37" stroke-width="0.6" />
+                <circle cx="0" cy="-4.5" r="1.5" fill="#8BC34A" />
+            </g>
+
+            <!-- 6. LONG HANGING FLORAL TORAN STRING -->
+            <g id="longFloralGarland">
+                <line x1="25" y1="0" x2="25" y2="235" stroke="#C5A059" stroke-width="1.3" stroke-dasharray="3,2" />
+                <use href="#mullappooCluster" transform="translate(25, 22)" />
+                <use href="#goldDiamond" transform="translate(25, 48) scale(0.8)" />
+                <use href="#pinkLotus" transform="translate(25, 82) scale(0.85)" />
+                <use href="#mullappooCluster" transform="translate(25, 110)" />
+                <use href="#goldDiamond" transform="translate(25, 138) scale(0.8)" />
+                <use href="#pinkLotus" transform="translate(25, 174) scale(0.85)" />
+                <use href="#mullappooCluster" transform="translate(25, 202)" />
+                <use href="#goldBell" transform="translate(25, 232) scale(0.85)" />
+            </g>
+
+            <!-- 7. SHORT HANGING JASMINE & LOTUS STRING -->
+            <g id="shortFloralGarland">
+                <line x1="20" y1="0" x2="20" y2="150" stroke="#C5A059" stroke-width="1.2" />
+                <use href="#mullappooCluster" transform="translate(20, 24)" />
+                <use href="#pinkLotus" transform="translate(20, 58) scale(0.78)" />
+                <use href="#mullappooCluster" transform="translate(20, 88)" />
+                <use href="#goldDiamond" transform="translate(20, 116) scale(0.75)" />
+                <use href="#goldBell" transform="translate(20, 148) scale(0.78)" />
+            </g>
+
+            <!-- 8. TRADITIONAL KERALA BRASS NILAVILAKKU LAMP WITH WARM GLOWING FLAME -->
+            <g id="keralaNilavilakkuLamp">
+                <!-- Warm Ambient Halo Behind Flame -->
+                <circle cx="0" cy="8" r="22" fill="rgba(255, 202, 40, 0.22)" />
+                <!-- Base Plate -->
+                <ellipse cx="0" cy="112" rx="24" ry="5.5" fill="url(#brassGold)" />
+                <path d="M -18,112 L -9,96 L 9,96 L 18,112 Z" fill="url(#brassGold)" />
+                <!-- Carved Pillar Stem -->
+                <rect x="-4" y="30" width="8" height="68" rx="3.5" fill="url(#brassGold)" />
+                <ellipse cx="0" cy="64" rx="7" ry="3.5" fill="url(#brassGold)" />
+                <ellipse cx="0" cy="80" rx="6.5" ry="3" fill="url(#brassGold)" />
+                <!-- Main Oil Bowl (Thattu) -->
+                <path d="M -22,38 Q 0,49 22,38 L 15,32 L -15,32 Z" fill="url(#brassGold)" />
+                <!-- Crown Finial (Koombu) -->
+                <path d="M -3,32 L 0,14 L 3,32 Z" fill="url(#brassGold)" />
+                <!-- Glowing Flames on Left, Right & Center Wicks -->
+                <g class="nilavilakku-flame">
+                    <path d="M -19,35 C -22,27 -19,21 -18,16 C -15,21 -15,27 -19,35 Z" fill="#FFB300" />
+                    <path d="M -19,34 C -20,29 -19,24 -18,21 C -17,24 -17,29 -19,34 Z" fill="#FFF9C4" />
+                    <path d="M 19,35 C 22,27 19,21 18,16 C 15,21 15,27 19,35 Z" fill="#FFB300" />
+                    <path d="M 19,34 C 20,29 19,24 18,21 C 17,24 17,29 19,34 Z" fill="#FFF9C4" />
+                    <path d="M 0,18 C -4,9 -3,2 0,-5 C 3,2 4,9 0,18 Z" fill="#FFA000" />
+                    <path d="M 0,16 C -2,10 -1.5,5 0,0 C 1.5,5 2,10 0,16 Z" fill="#FFFFFF" />
+                </g>
+            </g>
+
+            <!-- 9. SEAMLESS BOTANICAL VINE & HANGING LOTUS SECTION CONNECTOR -->
+            <g id="seamlessBotanicalDivider">
+                <path d="M 40,25 Q 160,5 280,25 T 520,25" stroke="#C5A059" stroke-width="1.3" fill="none" opacity="0.65" />
+                <path d="M 90,25 Q 185,42 280,25 Q 375,8 470,25" stroke="#2D5A34" stroke-width="1" fill="none" opacity="0.4" />
+                <path d="M 150,20 C 158,12 168,12 172,20 C 165,24 155,24 150,20 Z" fill="#4E8B42" opacity="0.65" />
+                <path d="M 390,20 C 398,12 408,12 412,20 C 405,24 395,24 390,20 Z" fill="#4E8B42" opacity="0.65" />
+                <use href="#pinkLotus" transform="translate(280, 26) scale(0.9)" />
+                <line x1="280" y1="32" x2="280" y2="58" stroke="#C5A059" stroke-width="1.2" />
+                <use href="#goldBell" transform="translate(280, 58) scale(0.72)" />
+                <line x1="185" y1="26" x2="185" y2="46" stroke="#C5A059" stroke-width="1" />
+                <use href="#goldDiamond" transform="translate(185, 48) scale(0.65)" />
+                <line x1="375" y1="26" x2="375" y2="46" stroke="#C5A059" stroke-width="1" />
+                <use href="#goldDiamond" transform="translate(375, 48) scale(0.65)" />
+            </g>
+        </defs>
+    </svg>
+
+    <!-- =====================================================================
+         1. CONTINUOUS FALLING JASMINE (MULLAPPOO) & LOTUS PETALS OVERLAY
+         ===================================================================== -->
+    <canvas id="petalCanvas"></canvas>
+
+    <!-- =====================================================================
+         2. FLOATING TOP-RIGHT MINIMALIST SPEAKER ICON BUTTON
+            (Revealed once user taps "ENTER THE WEDDING")
+         ===================================================================== -->
+    <div class="fixed top-4 right-4 sm:right-7 z-50 flex items-center">
+        <button id="musicToggle" onclick="toggleMusic()" aria-label="Mute or Unmute Wedding Music" class="hidden w-11 h-11 rounded-full bg-ivory/95 backdrop-blur-md border border-gold/60 text-espresso hover:text-gold-dark shadow-xl transition-all duration-300 items-center justify-center focus:outline-none hover:scale-105 active:scale-95 cursor-pointer" title="Mute / Unmute Music">
+            <!-- Speaker On SVG -->
+            <svg id="speakerOnIcon" class="w-5 h-5 text-gold-dark hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.54 8.46a5 5 0 010 7.07"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.07 4.93a10 10 0 010 14.14"></path>
+            </svg>
+            <!-- Speaker Muted SVG -->
+            <svg id="speakerOffIcon" class="w-5 h-5 text-espresso/80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <line x1="23" y1="9" x2="17" y2="15" stroke-linecap="round" stroke-linejoin="round"></line>
+                <line x1="17" y1="9" x2="23" y2="15" stroke-linecap="round" stroke-linejoin="round"></line>
+            </svg>
+        </button>
+    </div>
+
+    <!-- =====================================================================
+         3. UNIFIED MAIN INVITATION EXPERIENCE
+            Starts with STEP 1 (Close-up in Boat) + STEP 2 ("ENTER THE WEDDING" Button),
+            Zooms Out in STEP 3 & 4 to the Full Kerala Setting, Reveals Names &
+            Flower Shower in STEP 5, and Scrolls Naturally in STEP 6.
+         ===================================================================== -->
+    <main id="mainInvitation" class="relative z-10 bg-gradient-to-b from-[#FAF5E8] via-[#FDFBF7] to-[#F6EDE0] overflow-hidden">
+
+        <!-- Subtle Traditional Kasavu Weave Texture Overlay -->
+        <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#C59B27_1px,transparent_1px)] [background-size:26px_26px] pointer-events-none"></div>
+
+        <!-- =================================================================
+             OPENING STAGE & FULL KERALA MANDAPAM REVEAL (STEPS 1 TO 5)
+             ================================================================= -->
+        <section id="openingStage" class="is-closeup relative min-h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden select-none">
+
+            <!-- Ambient Close-Up Vignette (Softly darkens edges during STEP 1 close-up, fades away on zoom-out) -->
+            <div id="closeupVignette" class="absolute inset-0 z-20 bg-[radial-gradient(circle_at_50%_40%,transparent_28%,rgba(22,36,24,0.82)_88%)] pointer-events-none"></div>
+
+            <!-- CAMERA RIG: Scales from 1.68 (Close-Up on Boat) to 1.0 (Full Kerala Setting) -->
+            <div id="cameraRig" class="relative w-full max-w-2xl mx-auto min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-8 pt-10 pb-10">
+
+                <!-- 1. SURROUNDING TOP KERALA CANOPY: Hanging Jasmine (Mullappoo) & Pink Lotus Garlands -->
+                <div class="kerala-surround-top absolute top-0 inset-x-0 pointer-events-none z-10 flex justify-between overflow-visible">
+                    <!-- Top-Left Banana Leaf & Jasmine/Lotus Toran -->
+                    <svg viewBox="0 0 200 260" class="w-36 sm:w-48 h-auto overflow-visible toran-swing">
+                        <use href="#tallBananaBlade" transform="translate(-14, -22) rotate(136) scale(0.72)" />
+                        <use href="#sunlitBananaBlade" transform="translate(-6, 10) rotate(112) scale(0.65)" />
+                        <use href="#longFloralGarland" transform="translate(14, 0) scale(0.92)" />
+                        <use href="#shortFloralGarland" transform="translate(54, 0) scale(0.84)" />
+                    </svg>
+
+                    <!-- Top-Right Banana Leaf & Jasmine/Lotus Toran (Mirrored) -->
+                    <svg viewBox="0 0 200 260" class="w-36 sm:w-48 h-auto overflow-visible toran-swing" style="transform: scaleX(-1);">
+                        <use href="#tallBananaBlade" transform="translate(-14, -22) rotate(136) scale(0.72)" />
+                        <use href="#sunlitBananaBlade" transform="translate(-6, 10) rotate(112) scale(0.65)" />
+                        <use href="#longFloralGarland" transform="translate(14, 0) scale(0.92)" />
+                        <use href="#shortFloralGarland" transform="translate(54, 0) scale(0.84)" />
+                    </svg>
+                </div>
+
+                <!-- 2. SURROUNDING LEFT & RIGHT LUSH GREEN BANANA LEAVES (VAZHAYILA) -->
+                <div class="kerala-surround-left absolute bottom-4 -left-4 sm:left-0 w-28 sm:w-44 pointer-events-none z-10">
+                    <svg viewBox="0 0 165 500" class="w-full h-auto overflow-visible banana-sway-left">
+                        <use href="#image2SidePillar" />
+                    </svg>
+                </div>
+                <div class="kerala-surround-right absolute bottom-4 -right-4 sm:right-0 w-28 sm:w-44 pointer-events-none z-10">
+                    <svg viewBox="0 0 165 500" class="w-full h-auto overflow-visible banana-sway-right">
+                        <use href="#image2SidePillar" />
+                    </svg>
+                </div>
+
+                <!-- 3. TOP INVITATION BADGE (Revealed after zoom-out) -->
+                <div class="names-reveal-block relative z-20 text-center mb-3" style="transition-delay: 0.15s;">
+                    <p class="font-script text-2xl sm:text-3xl text-gold-dark mb-1">
+                        With the blessings of our parents & elders
+                    </p>
+                    <span class="inline-block uppercase tracking-[0.32em] text-[10px] sm:text-xs font-semibold text-keralaGreen px-4 py-1 rounded-full bg-keralaGreen/10 border border-keralaGreen/30">
+                        ✦ Wedding Invitation ✦
+                    </span>
+                </div>
+
+                <!-- 4. CENTERPIECE: THE COUPLE IN THE TRADITIONAL KERALA BOAT SETTING
+                     Starts as the full-screen focus in STEP 1, and smoothly becomes the arched
+                     centerpiece flanked by glowing Nilavilakku lamps in STEP 4 -->
+                <div class="relative z-20 flex items-center justify-center my-1">
+
+                    <!-- Left Glowing Brass Nilavilakku Lamp (Revealed on Zoom-Out) -->
+                    <div class="kerala-surround-lamps hidden xs:block sm:block absolute -left-14 sm:-left-20 bottom-1 w-14 sm:w-16 pointer-events-none z-30">
+                        <svg viewBox="-30 -15 60 135" class="w-full h-auto overflow-visible">
+                            <use href="#keralaNilavilakkuLamp" />
+                        </svg>
+                    </div>
+
+                    <!-- Arched Centerpiece Frame (Exact Original w-56 h-72 / sm:w-64 sm:h-80 Proportions Preserved) -->
+                    <div class="boat-scene-motion relative w-56 h-72 sm:w-64 sm:h-80 arch-frame p-2 bg-gradient-to-b from-gold via-gold-light to-gold-dark shadow-[0_20px_50px_rgba(44,30,20,0.35)] border border-gold-light/80">
+                        <div class="w-full h-full arch-frame overflow-hidden relative bg-espresso">
+                            <!-- Optional Video Support: If user places boat_closeup.mp4 in folder, it plays seamlessly; otherwise uses pic1.jpg -->
+                            <video id="coupleBoatVideo"
+                                   class="hidden w-full h-full couple-portrait-fit"
+                                   playsinline
+                                   muted
+                                   loop
+                                   preload="metadata">
+                                <!-- Falls back automatically to pic1.jpg below -->
+                            </video>
+
+                            <!-- Primary Couple Photograph (pic1.jpg with ~80% Portrait Fit Preserved) -->
+                            <img id="heroMainPhoto"
+                                 src="pic1.jpg"
+                                 alt="Abhijith and Reshma"
+                                 class="w-full h-full couple-portrait-fit transition-transform duration-1000"
+                                 onerror="this.src='https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=85'" />
+
+                            <!-- Warm Golden Sunlight Rays Overlay -->
+                            <div class="sunbeam-overlay absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(255,236,179,0.38),transparent_65%)] pointer-events-none"></div>
+
+                            <!-- Traditional Kerala Wooden Boat (Vallam) Prow & Gentle Backwater Ripples at Base -->
+                            <svg viewBox="0 0 300 70" class="absolute bottom-0 inset-x-0 w-full h-14 pointer-events-none" preserveAspectRatio="none">
+                                <!-- Ambient Backwater Reflection -->
+                                <rect x="0" y="36" width="300" height="34" fill="rgba(20, 48, 34, 0.55)" />
+                                <!-- Carved Kerala Vallam Boat Curve Cradling the Couple -->
+                                <path d="M -10,26 Q 150,56 310,22 L 295,48 Q 150,66 5,48 Z" fill="url(#vallamWood)" stroke="#D4AF37" stroke-width="1.2" />
+                                <path d="M 10,33 Q 150,58 290,30" stroke="#E6C987" stroke-width="0.8" fill="none" opacity="0.7" />
+                                <!-- Animated Shimmering Water Ripples -->
+                                <g class="water-ripple-anim" stroke="#FFF8E1" stroke-width="1.1" fill="none" stroke-linecap="round">
+                                    <path d="M 25,54 Q 65,50 105,54 T 185,54" opacity="0.65" />
+                                    <path d="M 95,62 Q 145,58 195,62 T 275,62" opacity="0.5" />
+                                    <path d="M 45,65 Q 85,63 125,65" opacity="0.4" />
+                                </g>
+                            </svg>
+                        </div>
+
+                        <!-- Auspicious Date Pill at Base of Arch -->
+                        <div class="absolute -bottom-3.5 left-1/2 -translate-x-1/2 bg-ivory px-5 py-1 rounded-full border border-gold shadow-md whitespace-nowrap z-30">
+                            <span class="font-serif font-bold text-xs tracking-[0.22em] text-espresso uppercase">
+                                20 • 12 • 2026
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Right Glowing Brass Nilavilakku Lamp (Revealed on Zoom-Out) -->
+                    <div class="kerala-surround-lamps hidden xs:block sm:block absolute -right-14 sm:-right-20 bottom-1 w-14 sm:w-16 pointer-events-none z-30">
+                        <svg viewBox="-30 -15 60 135" class="w-full h-auto overflow-visible">
+                            <use href="#keralaNilavilakkuLamp" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Mobile Pair of Nilavilakku Lamps (Visible on narrow phones right below the arch) -->
+                <div class="kerala-surround-lamps flex sm:hidden items-center justify-between w-64 px-2 -mt-4 mb-1 pointer-events-none z-20">
+                    <svg viewBox="-30 -15 60 135" class="w-10 h-auto overflow-visible">
+                        <use href="#keralaNilavilakkuLamp" />
+                    </svg>
+                    <svg viewBox="-30 -15 60 135" class="w-10 h-auto overflow-visible">
+                        <use href="#keralaNilavilakkuLamp" />
+                    </svg>
+                </div>
+
+                <!-- 5. STEP 5: ANIMATED COUPLE NAMES & INVITATION DETAILS (Fade in + slide up after zoom-out) -->
+                <div class="names-reveal-block relative z-20 text-center mt-5 max-w-xl mx-auto px-2" style="transition-delay: 0.45s;">
+                    <span class="block text-[10px] sm:text-xs uppercase tracking-[0.3em] text-taupe font-semibold mb-1">
+                        Together With Their Families
+                    </span>
+
+                    <h1 class="font-serif text-5xl sm:text-7xl text-espresso font-bold tracking-tight leading-none">
+                        Abhijith <span class="font-script text-4xl sm:text-6xl text-gold-dark font-normal mx-1">&amp;</span> Reshma
+                    </h1>
+
+                    <p class="font-serif italic text-base sm:text-xl text-taupe max-w-md mx-auto mt-2.5 mb-5">
+                        "Two souls with a single thought, two hearts that beat as one."
+                    </p>
+
+                    <!-- Quick Highlight Bar with Exact Preserved Venue Details -->
+                    <div class="grid grid-cols-3 gap-2 sm:gap-5 max-w-lg mx-auto py-3.5 px-3 rounded-2xl bg-ivory/95 border border-gold/45 shadow-md text-espresso mb-5">
+                        <div class="text-center">
+                            <span class="block text-[9px] sm:text-[10px] uppercase tracking-widest text-taupe">Sunday</span>
+                            <span class="font-serif font-bold text-sm sm:text-lg">20 Dec 2026</span>
+                        </div>
+                        <div class="text-center border-x border-gold/30 px-1.5">
+                            <span class="block text-[9px] sm:text-[10px] uppercase tracking-widest text-taupe">Muhurtham</span>
+                            <span class="font-serif font-bold text-sm sm:text-lg">9:00 AM IST</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[9px] sm:text-[10px] uppercase tracking-widest text-taupe">Hi-Tech Auditorium</span>
+                            <span class="font-serif font-bold text-xs sm:text-base leading-tight block">Palakkad, 678004</span>
+                        </div>
+                    </div>
+
+                    <!-- Scroll Down Cue -->
+                    <a href="#ceremony-details" class="inline-flex flex-col items-center text-keralaGreen hover:text-espresso transition-colors">
+                        <span class="text-[10px] uppercase tracking-[0.28em] font-semibold mb-1">Scroll to Explore Invitation</span>
+                        <i class="fa-solid fa-chevron-down text-xs animate-bounce text-gold-dark"></i>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- =============================================================
+                 STEP 2 & STEP 3: THE INTERACTIVE "ENTER THE WEDDING" BUTTON
+                 Positioned cleanly below the close-up boat portrait on mobile
+                 ============================================================= -->
+            <div id="enterButtonContainer" class="fixed bottom-7 inset-x-0 z-40 flex flex-col items-center justify-center px-6 transition-all duration-700">
+                <p class="font-script text-2xl sm:text-3xl text-gold-light drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-2">
+                    Abhijith &amp; Reshma
+                </p>
+                <button id="enterWeddingBtn"
+                        type="button"
+                        onclick="triggerMainReveal()"
+                        class="enter-wedding-btn group relative inline-flex items-center justify-center gap-3 px-9 py-4 rounded-full bg-gradient-to-r from-keralaGreen-deep via-keralaGreen to-keralaGreen-deep text-ivory border-2 border-gold-light font-serif text-base sm:text-lg font-semibold uppercase tracking-[0.24em] shadow-2xl active:scale-95 transition-all cursor-pointer">
+                    <span class="w-2 h-2 rounded-full bg-gold-light animate-ping"></span>
+                    <span>ENTER THE WEDDING</span>
+                    <i class="fa-solid fa-sparkles text-gold-light text-sm group-hover:rotate-12 transition-transform"></i>
+                </button>
+                <span class="text-[10px] uppercase tracking-[0.25em] text-ivory/85 mt-2.5 drop-shadow">
+                    Tap to unveil our sacred Kerala setting
+                </span>
+            </div>
+
+        </section>
+
+        <!-- =================================================================
+             DECORATIVE HANGING FLOWERS & BANANA SPRIGS IN EMPTY WHITE SIDE SPACES
+             ALONG THE SCROLLABLE INVITATION (STEP 6)
+             ================================================================= -->
+        <!-- Cluster 1: Countdown Side Hanging Lotus & Jasmine Strings -->
+        <div class="absolute top-[980px] left-0 w-20 sm:w-32 pointer-events-none z-0 opacity-80">
+            <svg viewBox="0 0 110 260" class="w-full h-auto overflow-visible toran-swing">
+                <use href="#tallBananaBlade" transform="translate(-18, 40) rotate(110) scale(0.5)" />
+                <use href="#longFloralGarland" transform="translate(2, 0) scale(0.85)" />
+            </svg>
+        </div>
+        <div class="absolute top-[980px] right-0 w-20 sm:w-32 pointer-events-none z-0 opacity-80">
+            <svg viewBox="0 0 110 260" class="w-full h-auto overflow-visible toran-swing" style="transform: scaleX(-1);">
+                <use href="#tallBananaBlade" transform="translate(-18, 40) rotate(110) scale(0.5)" />
+                <use href="#longFloralGarland" transform="translate(2, 0) scale(0.85)" />
+            </svg>
+        </div>
+
+        <!-- Cluster 2: Wishes Wall Side Hanging Lotus & Mullappoo Garlands -->
+        <div class="absolute top-[2050px] left-0 w-24 sm:w-36 pointer-events-none z-0 opacity-85">
+            <svg viewBox="0 0 120 300" class="w-full h-auto overflow-visible toran-swing">
+                <use href="#tallBananaBlade" transform="translate(-12, 20) rotate(128) scale(0.55)" />
+                <use href="#sunlitBananaBlade" transform="translate(-10, 50) rotate(105) scale(0.5)" />
+                <use href="#longFloralGarland" transform="translate(6, 10) scale(0.9)" />
+                <use href="#shortFloralGarland" transform="translate(38, 5) scale(0.8)" />
+            </svg>
+        </div>
+        <div class="absolute top-[2050px] right-0 w-24 sm:w-36 pointer-events-none z-0 opacity-85">
+            <svg viewBox="0 0 120 300" class="w-full h-auto overflow-visible toran-swing" style="transform: scaleX(-1);">
+                <use href="#tallBananaBlade" transform="translate(-12, 20) rotate(128) scale(0.55)" />
+                <use href="#sunlitBananaBlade" transform="translate(-10, 50) rotate(105) scale(0.5)" />
+                <use href="#longFloralGarland" transform="translate(6, 10) scale(0.9)" />
+                <use href="#shortFloralGarland" transform="translate(38, 5) scale(0.8)" />
+            </svg>
+        </div>
+
+        <!-- Cluster 3: Gallery Side Hanging Flowers -->
+        <div class="absolute top-[2920px] left-0 w-24 sm:w-36 pointer-events-none z-0 opacity-80">
+            <svg viewBox="0 0 120 280" class="w-full h-auto overflow-visible toran-swing">
+                <use href="#tallBananaBlade" transform="translate(-14, 30) rotate(120) scale(0.52)" />
+                <use href="#longFloralGarland" transform="translate(4, 0) scale(0.85)" />
+                <use href="#shortFloralGarland" transform="translate(34, 10) scale(0.75)" />
+            </svg>
+        </div>
+        <div class="absolute top-[2920px] right-0 w-24 sm:w-36 pointer-events-none z-0 opacity-80">
+            <svg viewBox="0 0 120 280" class="w-full h-auto overflow-visible toran-swing" style="transform: scaleX(-1);">
+                <use href="#tallBananaBlade" transform="translate(-14, 30) rotate(120) scale(0.52)" />
+                <use href="#longFloralGarland" transform="translate(4, 0) scale(0.85)" />
+                <use href="#shortFloralGarland" transform="translate(34, 10) scale(0.75)" />
+            </svg>
+        </div>
+
+        <!-- SEAMLESS BOTANICAL VINE & HANGING LOTUS CONNECTOR -->
+        <div class="w-full flex justify-center py-2 pointer-events-none select-none">
+            <svg viewBox="0 0 560 72" class="w-72 sm:w-96 h-auto overflow-visible">
+                <use href="#seamlessBotanicalDivider" />
+            </svg>
+        </div>
+
+        <!-- =====================================================================
+             STEP 6A: COUNTDOWN & MAIN TRADITIONAL WEDDING CEREMONY SECTION
+                      (All Original Wording, Venue, Date & Green Banana Leaf Stage Preserved)
+             ===================================================================== -->
+        <section id="ceremony-details" class="py-8 px-5 sm:px-10 relative">
+            <div class="max-w-4xl mx-auto relative z-10">
+
+                <!-- Auspicious Countdown Box -->
+                <div class="text-center mb-14 reveal">
+                    <span class="text-keralaGreen uppercase tracking-[0.3em] text-xs font-bold block mb-2">Counting Every Moment</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl text-espresso font-semibold mb-3">Until Our Auspicious Muhurtham</h2>
+                    <p class="text-taupe text-xs sm:text-sm uppercase tracking-widest mb-8">Sunday, 20 December 2026 • 9:00 AM IST</p>
+
+                    <div id="countdown" class="grid grid-cols-4 gap-2.5 sm:gap-6 max-w-xl mx-auto">
+                        <div class="bg-ivory/95 border border-gold/50 rounded-2xl p-3.5 sm:p-6 shadow-md">
+                            <span id="days" class="font-serif text-3xl sm:text-5xl text-espresso font-bold block">00</span>
+                            <span class="text-[10px] sm:text-xs uppercase tracking-widest text-taupe mt-1 block">Days</span>
+                        </div>
+                        <div class="bg-ivory/95 border border-gold/50 rounded-2xl p-3.5 sm:p-6 shadow-md">
+                            <span id="hours" class="font-serif text-3xl sm:text-5xl text-espresso font-bold block">00</span>
+                            <span class="text-[10px] sm:text-xs uppercase tracking-widest text-taupe mt-1 block">Hours</span>
+                        </div>
+                        <div class="bg-ivory/95 border border-gold/50 rounded-2xl p-3.5 sm:p-6 shadow-md">
+                            <span id="minutes" class="font-serif text-3xl sm:text-5xl text-espresso font-bold block">00</span>
+                            <span class="text-[10px] sm:text-xs uppercase tracking-widest text-taupe mt-1 block">Minutes</span>
+                        </div>
+                        <div class="bg-ivory/95 border border-gold/50 rounded-2xl p-3.5 sm:p-6 shadow-md">
+                            <span id="seconds" class="font-serif text-3xl sm:text-5xl text-keralaGreen font-bold block">00</span>
+                            <span class="text-[10px] sm:text-xs uppercase tracking-widest text-taupe mt-1 block">Seconds</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAIN TRADITIONAL WEDDING SHOWCASE STAGE
+                     (Preserved Green Side Borders, Top Banana Leaf Canopy & Hanging Garlands,
+                      and Tall Upright Layered Banana Leaves) -->
+                <div class="reveal relative max-w-3xl mx-auto rounded-[32px] bg-[#FDFBF6] border-2 border-[#2D5A34] shadow-2xl overflow-hidden">
+
+                    <!-- Left & Right Forest Green Vertical Side Strips Inside the Main Wedding Card -->
+                    <div class="absolute inset-y-0 left-0 w-6 sm:w-12 bg-[#2D5A34] border-r border-gold/40 z-0"></div>
+                    <div class="absolute inset-y-0 right-0 w-6 sm:w-12 bg-[#2D5A34] border-l border-gold/40 z-0"></div>
+
+                    <!-- TALL LAYERED WATERCOLOR BANANA LEAVES ON BOTTOM LEFT -->
+                    <svg viewBox="0 0 165 500" class="absolute bottom-0 left-0 w-28 sm:w-44 md:w-52 h-auto pointer-events-none z-10 overflow-visible banana-sway-left">
+                        <use href="#image2SidePillar" />
+                    </svg>
+
+                    <!-- TALL LAYERED WATERCOLOR BANANA LEAVES ON BOTTOM RIGHT -->
+                    <svg viewBox="0 0 165 500" class="absolute bottom-0 right-0 w-28 sm:w-44 md:w-52 h-auto pointer-events-none z-10 overflow-visible banana-sway-right">
+                        <use href="#image2SidePillar" />
+                    </svg>
+
+                    <!-- Top Banana Leaf Canopy & Hanging Lotus/Bell Garlands Framing the Top of the Stage -->
+                    <div class="absolute top-0 inset-x-6 sm:inset-x-12 pointer-events-none z-10 flex justify-between">
+                        <svg viewBox="0 0 160 220" class="w-28 sm:w-36 h-auto toran-swing overflow-visible">
+                            <use href="#tallBananaBlade" transform="translate(-14, -18) rotate(135) scale(0.55)" />
+                            <use href="#sunlitBananaBlade" transform="translate(-6, 8) rotate(112) scale(0.5)" />
+                            <line x1="34" y1="0" x2="34" y2="150" stroke="#C5A059" stroke-width="1.4" />
+                            <use href="#mullappooCluster" transform="translate(34, 22)" />
+                            <use href="#goldDiamond" transform="translate(34, 46) scale(0.8)" />
+                            <use href="#pinkLotus" transform="translate(34, 80) scale(0.82)" />
+                            <use href="#goldDiamond" transform="translate(34, 112) scale(0.8)" />
+                            <use href="#goldBell" transform="translate(34, 150) scale(0.85)" />
+                            <line x1="76" y1="0" x2="76" y2="98" stroke="#C5A059" stroke-width="1.1" />
+                            <use href="#mullappooCluster" transform="translate(76, 26)" />
+                            <use href="#pinkLotus" transform="translate(76, 60) scale(0.72)" />
+                            <use href="#goldBell" transform="translate(76, 98) scale(0.72)" />
+                        </svg>
+                        <svg viewBox="0 0 160 220" class="w-28 sm:w-36 h-auto toran-swing overflow-visible" style="transform: scaleX(-1);">
+                            <use href="#tallBananaBlade" transform="translate(-14, -18) rotate(135) scale(0.55)" />
+                            <use href="#sunlitBananaBlade" transform="translate(-6, 8) rotate(112) scale(0.5)" />
+                            <line x1="34" y1="0" x2="34" y2="150" stroke="#C5A059" stroke-width="1.4" />
+                            <use href="#mullappooCluster" transform="translate(34, 22)" />
+                            <use href="#goldDiamond" transform="translate(34, 46) scale(0.8)" />
+                            <use href="#pinkLotus" transform="translate(34, 80) scale(0.82)" />
+                            <use href="#goldDiamond" transform="translate(34, 112) scale(0.8)" />
+                            <use href="#goldBell" transform="translate(34, 150) scale(0.85)" />
+                            <line x1="76" y1="0" x2="76" y2="98" stroke="#C5A059" stroke-width="1.1" />
+                            <use href="#mullappooCluster" transform="translate(76, 26)" />
+                            <use href="#pinkLotus" transform="translate(76, 60) scale(0.72)" />
+                            <use href="#goldBell" transform="translate(76, 98) scale(0.72)" />
+                        </svg>
+                    </div>
+
+                    <!-- Ceremony Content Positioned Clearly in the Center Mandapam -->
+                    <div class="relative z-20 px-8 sm:px-20 pt-12 pb-14 sm:pb-16 text-center">
+                        <div class="w-16 h-16 rounded-full bg-keralaGreen text-gold-light border-2 border-gold flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">
+                            <i class="fa-solid fa-gopuram"></i>
+                        </div>
+
+                        <span class="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-keralaGreen font-bold bg-keralaGreen/10 border border-keralaGreen/30 px-4 py-1 rounded-full mb-3">
+                            ✦ Only One Auspicious Function ✦
+                        </span>
+
+                        <h3 class="font-serif text-3xl sm:text-5xl text-espresso font-bold mb-2">
+                            Main Traditional Wedding
+                        </h3>
+                        <p class="font-script text-2xl sm:text-3xl text-gold-dark mb-6">
+                            Auspicious Muhurtham &amp; Traditional Kerala Sadhya
+                        </p>
+
+                        <!-- Date & Venue Details Box (HI-TECH AUDITORIUM, PALAKKAD, KERALA, 678004) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto my-6 p-5 rounded-2xl bg-ivory/95 backdrop-blur-sm border border-gold/40 shadow-md text-left">
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-keralaGreen/15 text-keralaGreen flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-regular fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-widest text-taupe block">Date &amp; Muhurtham</span>
+                                    <p class="font-serif font-bold text-lg text-espresso">Sunday, 20 December 2026</p>
+                                    <p class="text-xs font-semibold text-keralaGreen">9:00 AM IST</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-keralaGreen/15 text-keralaGreen flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-widest text-taupe block">Wedding Venue</span>
+                                    <p class="font-serif font-bold text-base sm:text-lg text-espresso leading-snug">HI-TECH AUDITORIUM</p>
+                                    <p class="text-xs font-semibold text-keralaGreen">PALAKKAD, KERALA, 678004</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-espresso/80 text-sm leading-relaxed max-w-md mx-auto mb-8 bg-ivory/80 px-4 py-2.5 rounded-xl">
+                            Amidst fragrant Mullappoo garlands and soulful Nadaswaram melodies in serene Palakkad, we warmly invite you to bless Abhijith &amp; Reshma as they begin their forever on this auspicious morning, followed by a grand traditional Kerala Sadhya feast.
+                        </p>
+
+                        <!-- Action Buttons: Directions & Save to Calendar -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                            <a href="https://maps.google.com/?q=HI-TECH+AUDITORIUM+PALAKKAD+KERALA+678004" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="w-full sm:w-auto px-7 py-3.5 bg-keralaGreen text-ivory text-xs font-semibold uppercase tracking-[0.2em] rounded-full hover:bg-espresso transition-all shadow-lg flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-map-location-dot text-gold-light"></i> Get Directions (Google Maps)
+                            </a>
+
+                            <button type="button"
+                                    onclick="saveWeddingToCalendar()" 
+                                    class="w-full sm:w-auto px-7 py-3.5 bg-ivory border-2 border-gold text-espresso text-xs font-semibold uppercase tracking-[0.2em] rounded-full hover:bg-gold/20 transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                                <i class="fa-regular fa-calendar-plus text-gold-dark"></i> Save to Calendar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEAMLESS BOTANICAL VINE & HANGING LOTUS CONNECTOR -->
+        <div class="w-full flex justify-center py-4 pointer-events-none select-none">
+            <svg viewBox="0 0 560 72" class="w-72 sm:w-96 h-auto overflow-visible">
+                <use href="#seamlessBotanicalDivider" />
+            </svg>
+        </div>
+
+        <!-- =====================================================================
+             STEP 6B: INTERACTIVE GUEST ENTRIES & BLESSINGS WALL
+                      (Initialized Completely Empty — Ready for Real Live Responses)
+             ===================================================================== -->
+        <section id="wishes-wall" class="py-10 px-6 sm:px-12 relative">
+            <div class="max-w-4xl mx-auto relative z-10">
+
+                <!-- Section Header + Live Counters -->
+                <div class="text-center mb-12 reveal">
+                    <span class="inline-flex items-center gap-2 uppercase tracking-[0.3em] text-[11px] font-bold text-keralaGreen px-4 py-1.5 rounded-full bg-keralaGreen/10 border border-keralaGreen/30 mb-3 shadow-sm">
+                        <i class="fa-solid fa-sparkles text-gold-dark"></i> Main Attraction of Our Celebration
+                    </span>
+                    <h2 class="font-serif text-4xl sm:text-6xl text-espresso font-bold">
+                        Guest Entries &amp; Blessings Wall
+                    </h2>
+                    <p class="text-taupe text-sm sm:text-base max-w-xl mx-auto mt-3">
+                        Your warm wishes and blessings are our greatest gift! Sign our digital guestbook below and see your card appear live on our wedding wall.
+                    </p>
+
+                    <!-- Live Guest Counter Stats Pill (Starts at 0) -->
+                    <div class="mt-6 inline-flex items-center gap-6 px-7 py-3 rounded-full bg-ivory/95 shadow-md border border-gold/50">
+                        <div class="text-center">
+                            <span id="totalWishesCount" class="font-serif font-bold text-2xl text-keralaGreen">0</span>
+                            <span class="text-[10px] uppercase tracking-widest text-taupe block">Wishes Shared</span>
+                        </div>
+                        <div class="w-px h-7 bg-gold/40"></div>
+                        <div class="text-center">
+                            <span id="totalGuestsCount" class="font-serif font-bold text-2xl text-gold-dark">0</span>
+                            <span class="text-[10px] uppercase tracking-widest text-taupe block">Entries Recorded</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Luxury Guest Entry Form Card -->
+                <div class="reveal bg-ivory/95 border-2 border-gold/50 rounded-[32px] p-6 sm:p-10 shadow-2xl mb-14 relative overflow-hidden">
+                    <!-- Delicate Hanging Lotus & Jasmine Garland in Top-Right Empty Space of Form Card -->
+                    <svg viewBox="0 0 90 155" class="w-16 sm:w-20 h-auto absolute top-0 right-4 pointer-events-none opacity-85 toran-swing">
+                        <use href="#shortFloralGarland" transform="translate(25, 0) scale(0.85)" />
+                    </svg>
+
+                    <h3 class="font-serif text-2xl sm:text-3xl text-espresso font-semibold mb-6 flex items-center gap-2.5 pr-14">
+                        <i class="fa-solid fa-feather-pointed text-keralaGreen"></i> Write a Blessing for Abhijith &amp; Reshma
+                    </h3>
+
+                    <form id="wishForm" onsubmit="submitGuestWish(event)" class="space-y-5 relative z-10">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <!-- Guest Name -->
+                            <div>
+                                <label class="block text-[11px] uppercase tracking-widest text-espresso font-semibold mb-2" for="guestName">
+                                    Your Name / Family Name *
+                                </label>
+                                <input id="guestName" type="text" required placeholder="e.g., Arjun Nair & Family" 
+                                       class="w-full px-4 py-3.5 rounded-xl bg-champagne/60 border border-gold/40 text-espresso placeholder-taupe/60 text-sm focus:outline-none focus:border-keralaGreen transition-colors">
+                            </div>
+
+                            <!-- Joining From / Side -->
+                            <div>
+                                <label class="block text-[11px] uppercase tracking-widest text-espresso font-semibold mb-2" for="guestSide">
+                                    Joining From *
+                                </label>
+                                <select id="guestSide" class="w-full px-4 py-3.5 rounded-xl bg-champagne/60 border border-gold/40 text-espresso text-sm focus:outline-none focus:border-keralaGreen transition-colors">
+                                    <option value="Groom's Side (Abhijith)">Groom's Side (Abhijith)</option>
+                                    <option value="Bride's Side (Reshma)">Bride's Side (Reshma)</option>
+                                    <option value="Friends & Colleagues">Friends &amp; Colleagues</option>
+                                    <option value="Close Family & Relatives">Close Family &amp; Relatives</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Attending Status Pills -->
+                        <div>
+                            <label class="block text-[11px] uppercase tracking-widest text-espresso font-semibold mb-2">
+                                Attending Status (Hi-Tech Auditorium, Palakkad • 20 Dec 2026) *
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gold/40 bg-champagne/40 cursor-pointer hover:bg-gold/15 transition-colors">
+                                    <input type="radio" name="rsvpStatus" value="Joyfully Attending 🎉" checked class="accent-keralaGreen w-4 h-4">
+                                    <span class="text-xs sm:text-sm font-medium text-espresso">Joyfully Attending in Palakkad 🎉</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gold/40 bg-champagne/40 cursor-pointer hover:bg-gold/15 transition-colors">
+                                    <input type="radio" name="rsvpStatus" value="Sending Blessings from Afar ❤️" class="accent-keralaGreen w-4 h-4">
+                                    <span class="text-xs sm:text-sm font-medium text-espresso">Sending Warm Blessings from Afar ❤️</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Quick Reaction Sticker Pills -->
+                        <div>
+                            <span class="block text-[11px] uppercase tracking-widest text-taupe font-semibold mb-2">
+                                Tap a Quick Blessing Sticker to Add:
+                            </span>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="appendQuickSticker('🌸 Wishing you a blessed & happy married life!')" class="text-xs bg-champagne hover:bg-keralaGreen hover:text-white text-espresso border border-gold/40 px-3.5 py-1.5 rounded-full transition-all cursor-pointer">
+                                    🌸 Happy Married Life
+                                </button>
+                                <button type="button" onclick="appendQuickSticker('✨ Subha Muhurtham & eternal togetherness!')" class="text-xs bg-champagne hover:bg-keralaGreen hover:text-white text-espresso border border-gold/40 px-3.5 py-1.5 rounded-full transition-all cursor-pointer">
+                                    ✨ Blessed Muhurtham
+                                </button>
+                                <button type="button" onclick="appendQuickSticker('❤️ Endless love, laughter & prosperity always!')" class="text-xs bg-champagne hover:bg-keralaGreen hover:text-white text-espresso border border-gold/40 px-3.5 py-1.5 rounded-full transition-all cursor-pointer">
+                                    ❤️ Endless Love
+                                </button>
+                                <button type="button" onclick="appendQuickSticker('🍃 See you at Hi-Tech Auditorium, Palakkad!')" class="text-xs bg-champagne hover:bg-keralaGreen hover:text-white text-espresso border border-gold/40 px-3.5 py-1.5 rounded-full transition-all cursor-pointer">
+                                    🍃 See You in Palakkad!
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Wish Message Textarea -->
+                        <div>
+                            <label class="block text-[11px] uppercase tracking-widest text-espresso font-semibold mb-2" for="wishMessage">
+                                Your Heartfelt Message &amp; Wishes *
+                            </label>
+                            <textarea id="wishMessage" rows="3" required placeholder="Write your blessings for Abhijith & Reshma..." 
+                                      class="w-full px-4 py-3.5 rounded-xl bg-champagne/60 border border-gold/40 text-espresso placeholder-taupe/60 text-sm focus:outline-none focus:border-keralaGreen transition-colors resize-none"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-keralaGreen-deep via-keralaGreen to-keralaGreen-deep text-gold-light uppercase tracking-[0.22em] text-xs font-bold rounded-xl hover:opacity-95 transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-paper-plane"></i> Post Blessing &amp; Shower Petals ✨
+                        </button>
+                    </form>
+
+                    <!-- Toast Notification Banner on Submission -->
+                    <div id="wishSuccessBanner" class="hidden mt-5 p-4 rounded-2xl bg-keralaGreen/15 border border-keralaGreen text-espresso text-center text-xs sm:text-sm font-medium">
+                        🎉 Thank you! Your entry and blessing have been pinned live to Abhijith &amp; Reshma's Wedding Wall below!
+                    </div>
+                </div>
+
+                <!-- LIVE GUEST WISHES WALL DISPLAY (STARTS EMPTY UNTIL FIRST SUBMISSION) -->
+                <div class="reveal">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 px-2">
+                        <div>
+                            <h3 class="font-serif text-2xl sm:text-3xl text-espresso font-bold flex items-center gap-2">
+                                <span>Live Guest Wishes Wall</span>
+                                <span id="wishCountBadge" class="text-xs font-sans font-bold bg-keralaGreen text-gold-light px-3 py-0.5 rounded-full">0 Blessings</span>
+                            </h3>
+                            <p class="text-xs text-taupe">Live responses appear below as guests sign the wall</p>
+                        </div>
+                    </div>
+
+                    <!-- Empty State / Live Grid of Guest Wishes -->
+                    <div id="wishesWallGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5 max-h-[620px] overflow-y-auto pr-1 pb-4">
+                        <!-- Dynamically populated by JavaScript (Empty initially) -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEAMLESS BOTANICAL VINE & HANGING LOTUS CONNECTOR -->
+        <div class="w-full flex justify-center py-4 pointer-events-none select-none">
+            <svg viewBox="0 0 560 72" class="w-72 sm:w-96 h-auto overflow-visible">
+                <use href="#seamlessBotanicalDivider" />
+            </svg>
+        </div>
+
+        <!-- =====================================================================
+             STEP 6C: AESTHETIC PHOTO GALLERY & MOMENTS (WITH LIGHTBOX)
+                      3 Arched Frames loading pic1.jpg, pic2.jpg, pic3.jpg
+             ===================================================================== -->
+        <section class="py-10 px-6 sm:px-12 relative">
+            <div class="max-w-5xl mx-auto relative z-10">
+                <div class="text-center mb-12 reveal">
+                    <span class="text-keralaGreen uppercase tracking-[0.3em] text-xs font-semibold block mb-2">Captured Memories</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl text-espresso font-bold">Abhijith &amp; Reshma's Moments</h2>
+                    <p class="text-taupe text-xs sm:text-sm mt-2">Tap any portrait to view full screen</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-7 reveal">
+                    <!-- Photo 1 (pic1.jpg - Exact Original aspect-[4/5] Frame + ~80% Fit) -->
+                    <div onclick="openLightbox(document.getElementById('galleryPhoto1').src, 'Abhijith & Reshma — Forever Begins')" 
+                         class="group bg-ivory/95 p-3.5 pb-6 rounded-3xl border border-gold/40 shadow-lg cursor-pointer hover:-translate-y-2 transition-all duration-300">
+                        <div class="aspect-[4/5] arch-frame overflow-hidden mb-4 bg-espresso">
+                            <img id="galleryPhoto1"
+                                 src="pic1.jpg" 
+                                 alt="Abhijith & Reshma Moment 1" 
+                                 loading="lazy"
+                                 class="w-full h-full couple-portrait-fit group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80'">
+                        </div>
+                        <p class="font-script text-2xl text-center text-espresso">Forever Begins</p>
+                    </div>
+
+                    <!-- Photo 2 (pic2.jpg) -->
+                    <div onclick="openLightbox(document.getElementById('galleryPhoto2').src, 'Abhijith & Reshma — Promised Hearts')" 
+                         class="group bg-ivory/95 p-3.5 pb-6 rounded-3xl border border-gold/40 shadow-lg cursor-pointer hover:-translate-y-2 transition-all duration-300">
+                        <div class="aspect-[4/5] arch-frame overflow-hidden mb-4 bg-espresso">
+                            <img id="galleryPhoto2"
+                                 src="pic2.jpg" 
+                                 alt="Abhijith & Reshma Moment 2" 
+                                 loading="lazy"
+                                 class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80'">
+                        </div>
+                        <p class="font-script text-2xl text-center text-espresso">Promised Hearts</p>
+                    </div>
+
+                    <!-- Photo 3 (pic3.jpg) -->
+                    <div onclick="openLightbox(document.getElementById('galleryPhoto3').src, 'Abhijith & Reshma — Together in Love')" 
+                         class="group bg-ivory/95 p-3.5 pb-6 rounded-3xl border border-gold/40 shadow-lg cursor-pointer hover:-translate-y-2 transition-all duration-300">
+                        <div class="aspect-[4/5] arch-frame overflow-hidden mb-4 bg-espresso">
+                            <img id="galleryPhoto3"
+                                 src="pic3.jpg" 
+                                 alt="Abhijith & Reshma Moment 3" 
+                                 loading="lazy"
+                                 class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80'">
+                        </div>
+                        <p class="font-script text-2xl text-center text-espresso">Together in Love</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEAMLESS BOTANICAL VINE & HANGING LOTUS CONNECTOR -->
+        <div class="w-full flex justify-center pt-4 pb-2 pointer-events-none select-none">
+            <svg viewBox="0 0 560 72" class="w-72 sm:w-96 h-auto overflow-visible">
+                <use href="#seamlessBotanicalDivider" />
+            </svg>
+        </div>
+
+        <!-- =====================================================================
+             STEP 6D: CLOSING FOOTER & REPLAY OPENING SCENE BUTTON
+             ===================================================================== -->
+        <footer class="pt-8 pb-16 px-6 text-espresso text-center relative overflow-hidden z-30">
+            <!-- Bottom Corner Banana Leaf Sprigs Framing the Footer -->
+            <svg viewBox="0 0 140 200" class="w-24 sm:w-32 h-auto absolute bottom-0 left-0 pointer-events-none opacity-75 banana-sway-left">
+                <use href="#tallBananaBlade" transform="translate(-10, 45) rotate(24) scale(0.65)" />
+                <use href="#sunlitBananaBlade" transform="translate(-5, 80) rotate(38) scale(0.6)" />
+            </svg>
+            <svg viewBox="0 0 140 200" class="w-24 sm:w-32 h-auto absolute bottom-0 right-0 pointer-events-none opacity-75 banana-sway-right">
+                <use href="#tallBananaBlade" transform="translate(-10, 45) rotate(24) scale(0.65)" />
+                <use href="#sunlitBananaBlade" transform="translate(-5, 80) rotate(38) scale(0.6)" />
+            </svg>
+
+            <div class="max-w-xl mx-auto relative z-10 flex flex-col items-center">
+                <span class="font-script text-3xl text-gold-dark mb-1">We can't wait to celebrate with you</span>
+                <h2 class="font-serif text-4xl sm:text-5xl text-espresso font-bold mb-2">Abhijith &amp; Reshma</h2>
+                <p class="text-keralaGreen text-xs font-bold uppercase tracking-[0.25em] mb-1">
+                    Sunday, 20 December 2026 • 9:00 AM IST
+                </p>
+                <p class="text-taupe text-xs uppercase tracking-[0.22em] mb-6 font-semibold">
+                    HI-TECH AUDITORIUM, PALAKKAD, KERALA, 678004
+                </p>
+
+                <!-- REPLAY OPENING CLOSE-UP BUTTON -->
+                <button type="button" onclick="replayOpeningCloseup()" class="mt-2 group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-keralaGreen-deep via-keralaGreen to-keralaGreen-deep text-gold-light text-xs font-bold uppercase tracking-[0.22em] rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-gold/50">
+                    <i class="fa-solid fa-rotate-left group-hover:-rotate-45 transition-transform"></i>
+                    <span>Replay Opening Scene</span>
+                </button>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- =====================================================================
+         LIGHTBOX MODAL FOR GALLERY
+         ===================================================================== -->
+    <div id="lightboxModal" onclick="closeLightbox()" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4">
+        <button type="button" onclick="closeLightbox()" class="absolute top-6 right-6 text-white text-3xl hover:text-gold transition-colors cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="max-w-3xl max-h-[88vh] flex flex-col items-center" onclick="event.stopPropagation()">
+            <img id="lightboxImg" src="" alt="Gallery Fullscreen" class="max-h-[78vh] max-w-full rounded-2xl object-contain border border-gold/40 shadow-2xl">
+            <p id="lightboxCaption" class="font-serif text-xl text-ivory mt-4"></p>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         JAVASCRIPT: CAMERA ZOOM-OUT REVEAL, JASMINE PETAL SHOWER, MUSIC,
+                     COUNTDOWN, AND EMPTY LIVE GUESTBOOK
+         ===================================================================== -->
+    <script>
+        /* -------------------------------------------------------------------
+           0. GLOBAL STATE & DEBOUNCE LOCK FOR OPENING REVEAL
+           ------------------------------------------------------------------- */
+        let isRevealed = false;
+        let isTransitioning = false;
+        let isMusicPlaying = false;
+        let synth = null;
+        let melodyLoop = null;
+
+        /* -------------------------------------------------------------------
+           1. STEP 3 & STEP 4: CONNECTED CAMERA ZOOM-OUT REVEAL
+           ------------------------------------------------------------------- */
+        function triggerMainReveal() {
+            // Prevent accidental double-taps during transition
+            if (isRevealed || isTransitioning) return;
+            isTransitioning = true;
+            isRevealed = true;
+
+            const openingStage = document.getElementById('openingStage');
+            const enterBtnContainer = document.getElementById('enterButtonContainer');
+            const musicBtn = document.getElementById('musicToggle');
+            const petalCanvas = document.getElementById('petalCanvas');
+
+            // 1. Fade out the "ENTER THE WEDDING" button smoothly
+            enterBtnContainer.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+
+            // 2. Switch stage from Close-Up to Full Kerala Setting (smooth CSS camera pull-back)
+            openingStage.classList.remove('is-closeup');
+            openingStage.classList.add('is-revealed');
+
+            // 3. Start continuous flower shower (White Mullappoo Jasmine + Gold/Blush Petals)
+            petalCanvas.classList.add('active');
+            triggerCelebrationBurst();
+
+            // 4. Reveal minimalist speaker icon in top-right & start soft ambient melody
+            musicBtn.classList.remove('hidden');
+            musicBtn.classList.add('flex');
+            if (!isMusicPlaying) {
+                toggleMusic();
+            }
+
+            // 5. Unlock natural vertical scrolling as the camera settles
+            setTimeout(() => {
+                document.body.classList.remove('stage-locked');
+                enterBtnContainer.style.display = 'none';
+                isTransitioning = false;
+            }, 1450);
+        }
+
+        function replayOpeningCloseup() {
+            if (isTransitioning) return;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const openingStage = document.getElementById('openingStage');
+            const enterBtnContainer = document.getElementById('enterButtonContainer');
+            const petalCanvas = document.getElementById('petalCanvas');
+
+            setTimeout(() => {
+                isRevealed = false;
+                document.body.classList.add('stage-locked');
+                petalCanvas.classList.remove('active');
+
+                openingStage.classList.remove('is-revealed');
+                openingStage.classList.add('is-closeup');
+
+                enterBtnContainer.style.display = 'flex';
+                void enterBtnContainer.offsetWidth;
+                enterBtnContainer.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }, 400);
+        }
+
+        /* -------------------------------------------------------------------
+           2. STEP 5: LIGHTWEIGHT CONTINUOUS JASMINE & LOTUS FLOWER SHOWER
+           ------------------------------------------------------------------- */
+        const canvas = document.getElementById('petalCanvas');
+        const ctx = canvas.getContext('2d');
+        let cw = canvas.width = window.innerWidth;
+        let ch = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            cw = canvas.width = window.innerWidth;
+            ch = canvas.height = window.innerHeight;
+        });
+
+        const flowerPalette = [
+            '#FFFFFF', // Pure white Mullappoo (jasmine) petal
+            '#FFFDF5', // Warm cream jasmine bud
+            '#F5E1A4', // Soft Kasavu gold floral accent
+            '#E6C987', // Shimmering golden dust
+            '#F4C6C9'  // Delicate pink lotus petal
+        ];
+
+        const particles = [];
+        const baseParticleCount = window.innerWidth < 640 ? 28 : 40;
+
+        function createPetal(isBurst = false) {
+            return {
+                x: isBurst ? cw / 2 + (Math.random() - 0.5) * 180 : Math.random() * cw,
+                y: isBurst ? ch * 0.38 : Math.random() * ch,
+                size: Math.random() * 5.5 + 3.5,
+                speedX: isBurst ? (Math.random() - 0.5) * 6 : (Math.random() - 0.5) * 0.85,
+                speedY: isBurst ? (Math.random() * -5 - 1.5) : (Math.random() * 1.15 + 0.55),
+                gravity: isBurst ? 0.14 : 0,
+                rotation: Math.random() * 360,
+                rotationSpeed: (Math.random() - 0.5) * 1.8,
+                swayAngle: Math.random() * Math.PI * 2,
+                swaySpeed: Math.random() * 0.02 + 0.008,
+                opacity: Math.random() * 0.5 + 0.35,
+                color: flowerPalette[Math.floor(Math.random() * flowerPalette.length)],
+                isBurst: isBurst
+            };
+        }
+
+        for (let i = 0; i < baseParticleCount; i++) {
+            particles.push(createPetal(false));
+        }
+
+        function triggerCelebrationBurst() {
+            for (let i = 0; i < 32; i++) {
+                particles.push(createPetal(true));
+            }
+        }
+
+        function renderPetals() {
+            ctx.clearRect(0, 0, cw, ch);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.swayAngle += p.swaySpeed;
+                p.x += p.speedX + Math.sin(p.swayAngle) * 0.45;
+                p.speedY += p.gravity;
+                p.y += p.speedY;
+                p.rotation += p.rotationSpeed;
+
+                if (p.isBurst && p.y > ch + 20) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                if (!p.isBurst) {
+                    if (p.y > ch + 15) {
+                        p.y = -15;
+                        p.x = Math.random() * cw;
+                    }
+                    if (p.x > cw + 15) p.x = -10;
+                    if (p.x < -15) p.x = cw + 10;
+                }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.globalAlpha = p.opacity;
+                ctx.fillStyle = p.color;
+
+                // Stylized Jasmine / Lotus Petal Shape
+                ctx.beginPath();
+                ctx.moveTo(0, -p.size);
+                ctx.bezierCurveTo(p.size * 0.85, -p.size * 0.85, p.size * 0.85, p.size * 0.85, 0, p.size * 1.25);
+                ctx.bezierCurveTo(-p.size * 0.85, p.size * 0.85, -p.size * 0.85, -p.size * 0.85, 0, -p.size);
+                ctx.fill();
+                ctx.restore();
+            }
+            requestAnimationFrame(renderPetals);
+        }
+        renderPetals();
+
+        /* -------------------------------------------------------------------
+           3. GENTLE ROMANTIC INSTRUMENTAL MELODY & SPEAKER ICON TOGGLE
+           ------------------------------------------------------------------- */
+        async function toggleMusic() {
+            const speakerOn = document.getElementById('speakerOnIcon');
+            const speakerOff = document.getElementById('speakerOffIcon');
+
+            try {
+                if (!isMusicPlaying) {
+                    await Tone.start();
+                    if (!synth) {
+                        synth = new Tone.PolySynth(Tone.Synth, {
+                            oscillator: { type: 'sine' },
+                            envelope: { attack: 0.45, decay: 0.9, sustain: 0.4, release: 2.4 }
+                        }).toDestination();
+                        synth.volume.value = -14;
+
+                        // Warm auspicious South Indian pentatonic-inspired chord progression
+                        const chords = [
+                            ['F4', 'A4', 'C5'],
+                            ['D4', 'F4', 'A4'],
+                            ['G4', 'A4', 'D5'],
+                            ['C4', 'E4', 'G4']
+                        ];
+                        let step = 0;
+                        melodyLoop = new Tone.Loop(time => {
+                            synth.triggerAttackRelease(chords[step], '2n', time);
+                            step = (step + 1) % chords.length;
+                        }, '2n').start(0);
+                        Tone.Transport.bpm.value = 64;
+                    }
+                    Tone.Transport.start();
+                    isMusicPlaying = true;
+                    speakerOn.classList.remove('hidden');
+                    speakerOff.classList.add('hidden');
+                } else {
+                    Tone.Transport.pause();
+                    isMusicPlaying = false;
+                    speakerOn.classList.add('hidden');
+                    speakerOff.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.log('Audio waiting for user interaction:', err);
+            }
+        }
+
+        /* -------------------------------------------------------------------
+           4. COUNTDOWN TO 20 DECEMBER 2026 AT 9:00 AM IST
+           ------------------------------------------------------------------- */
+        const targetWeddingTime = new Date('2026-12-20T09:00:00+05:30').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetWeddingTime - now;
+
+            if (diff <= 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(d).padStart(2, '0');
+            document.getElementById('hours').innerText = String(h).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(m).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(s).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        /* -------------------------------------------------------------------
+           5. SAVE TO GOOGLE CALENDAR (20 DEC 2026, 9:00 AM IST, PALAKKAD)
+           ------------------------------------------------------------------- */
+        function saveWeddingToCalendar() {
+            const title = encodeURIComponent("Abhijith & Reshma — Traditional Wedding Ceremony");
+            const details = encodeURIComponent("Join us to celebrate the auspicious Main Traditional Wedding Muhurtham of Abhijith & Reshma at 9:00 AM IST at HI-TECH AUDITORIUM, PALAKKAD, KERALA, 678004.");
+            const location = encodeURIComponent("HI-TECH AUDITORIUM, PALAKKAD, KERALA, 678004");
+            const dates = "20261220T033000Z/20261220T083000Z";
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+            window.open(calendarUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        /* -------------------------------------------------------------------
+           6. EMPTY LIVE GUEST ENTRIES & WISHES WALL (STARTS AT 0 ENTRIES)
+           ------------------------------------------------------------------- */
+        const STORAGE_KEY = 'abhijith_reshma_live_wishes_empty_v1';
+
+        function loadWishes() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+            } catch (e) {
+                console.warn('LocalStorage unavailable');
+            }
+            return []; // Strictly empty until real guests submit
+        }
+
+        function saveWishes(list) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+            } catch (e) {
+                console.warn('LocalStorage unavailable');
+            }
+        }
+
+        let wishesList = loadWishes();
+
+        function escapeHtml(str) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(str).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function renderWishesWall() {
+            const grid = document.getElementById('wishesWallGrid');
+            const badge = document.getElementById('wishCountBadge');
+            const totalWishesEl = document.getElementById('totalWishesCount');
+            const totalGuestsEl = document.getElementById('totalGuestsCount');
+
+            badge.innerText = `${wishesList.length} Blessing${wishesList.length === 1 ? '' : 's'}`;
+            if (totalWishesEl) totalWishesEl.innerText = wishesList.length;
+            if (totalGuestsEl) totalGuestsEl.innerText = wishesList.length;
+
+            if (wishesList.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-1 md:col-span-2 bg-ivory/90 border border-dashed border-gold/60 rounded-3xl p-10 text-center shadow-sm">
+                        <div class="w-12 h-12 rounded-full bg-keralaGreen/10 text-keralaGreen flex items-center justify-center mx-auto mb-3 text-lg">
+                            <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <h4 class="font-serif text-2xl font-semibold text-espresso mb-1">Be the First to Bless Abhijith &amp; Reshma!</h4>
+                        <p class="text-xs sm:text-sm text-taupe max-w-md mx-auto">
+                            No wishes have been posted yet. Fill out the guestbook above and your heartfelt message will appear live right here!
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = wishesList.map(item => `
+                <div class="bg-ivory border border-gold/40 rounded-2xl p-5 shadow-md hover:shadow-lg transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <div>
+                                <h4 class="font-serif text-xl font-bold text-espresso leading-snug">${escapeHtml(item.name)}</h4>
+                                <span class="text-[11px] text-taupe block">${escapeHtml(item.side)}</span>
+                            </div>
+                            <span class="text-[10px] uppercase tracking-wider font-semibold bg-keralaGreen/10 text-keralaGreen border border-keralaGreen/30 px-2.5 py-1 rounded-full shrink-0">
+                                ${escapeHtml(item.rsvp)}
+                            </span>
+                        </div>
+                        <p class="text-espresso/90 text-sm italic leading-relaxed my-3 bg-champagne/50 p-3.5 rounded-xl border border-gold/20">
+                            "${escapeHtml(item.message)}"
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-gold/20 text-xs text-taupe">
+                        <span><i class="fa-regular fa-clock mr-1 text-gold-dark"></i>${escapeHtml(item.time)}</span>
+                        <button type="button" onclick="likeWish(${item.id})" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blush/40 hover:bg-blush text-burgundy font-semibold transition-all active:scale-90 cursor-pointer">
+                            <i class="fa-solid fa-heart text-burgundy"></i>
+                            <span>${item.likes}</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function appendQuickSticker(text) {
+            const box = document.getElementById('wishMessage');
+            box.value = box.value ? `${box.value.trim()} ${text}` : text;
+            box.focus();
+        }
+
+        function submitGuestWish(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('guestName');
+            const sideInput = document.getElementById('guestSide');
+            const msgInput = document.getElementById('wishMessage');
+            const rsvpRadio = document.querySelector('input[name="rsvpStatus"]:checked');
+
+            const newEntry = {
+                id: Date.now(),
+                name: nameInput.value.trim(),
+                side: sideInput.value,
+                rsvp: rsvpRadio ? rsvpRadio.value : 'Joyfully Attending 🎉',
+                message: msgInput.value.trim(),
+                likes: 1,
+                time: 'Just now'
+            };
+
+            wishesList.unshift(newEntry);
+            saveWishes(wishesList);
+            renderWishesWall();
+            triggerCelebrationBurst();
+
+            nameInput.value = '';
+            msgInput.value = '';
+            const banner = document.getElementById('wishSuccessBanner');
+            banner.classList.remove('hidden');
+            setTimeout(() => banner.classList.add('hidden'), 6000);
+        }
+
+        function likeWish(id) {
+            const item = wishesList.find(w => w.id === id);
+            if (item) {
+                item.likes += 1;
+                saveWishes(wishesList);
+                renderWishesWall();
+            }
+        }
+
+        renderWishesWall();
+
+        /* -------------------------------------------------------------------
+           7. LIGHTBOX MODAL FOR GALLERY
+           ------------------------------------------------------------------- */
+        function openLightbox(src, caption) {
+            const modal = document.getElementById('lightboxModal');
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxCaption').innerText = caption;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightboxModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+           8. SCROLL REVEAL INTERSECTION OBSERVER
+           ------------------------------------------------------------------- */
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
