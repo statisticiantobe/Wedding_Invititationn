@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts (Including Alex Brush for seamless uppercase calligraphic 'A' & Noto Serif Malayalam) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Malayalam:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -92,14 +92,15 @@
       min-height: 100svh;
     }
 
-    #heroImageContainer {
-      -webkit-mask-image: linear-gradient(to bottom, #000000 0%, #000000 78%, rgba(0, 0, 0, 0) 100%);
-      mask-image: linear-gradient(to bottom, #000000 0%, #000000 78%, rgba(0, 0, 0, 0) 100%);
+    /* Tall, gradual multi-stop alpha-mask fade so the hero image melts into #FDFBF7 with zero horizontal line */
+    .hero-image-mask {
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 58%, rgba(0,0,0,0.68) 74%, rgba(0,0,0,0.28) 89%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 58%, rgba(0,0,0,0.68) 74%, rgba(0,0,0,0.28) 89%, rgba(0,0,0,0) 100%);
     }
 
     #heroFullImage {
       transform-origin: center 28%;
-      transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1), filter 1.8s ease;
+      transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1), filter 1.6s ease;
       will-change: transform;
     }
 
@@ -111,6 +112,21 @@
     /* Revealed Full-Screen State after button click */
     #heroSection.is-revealed #heroFullImage {
       transform: scale(1.0);
+    }
+
+    /* Top "✦ WEDDING INVITATION ✦" Badge: Hidden above screen initially, slides down on click */
+    #topInviteBadge {
+      transform: translateY(-4.5rem);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 1.25s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+                  opacity 1.1s ease 0.15s;
+    }
+
+    #heroSection.is-revealed #topInviteBadge {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     /* Smooth Transition for Post-Click Revealed Details inside Hero */
@@ -186,13 +202,13 @@
       animation: garlandSwingRight 6s ease-in-out 1.4s infinite;
     }
 
-    /* Shimmering Button Glow */
+    /* Shimmering Rose-Cream Button Glow */
     @keyframes buttonPulse {
       0%, 100% {
-        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.55), 0 12px 28px -4px rgba(20, 45, 25, 0.65);
+        box-shadow: 0 0 18px 2px rgba(247, 223, 220, 0.72), 0 0 0 0 rgba(255, 245, 245, 0.8), 0 10px 28px -4px rgba(27, 59, 34, 0.45);
       }
       50% {
-        box-shadow: 0 0 0 12px rgba(212, 175, 55, 0), 0 16px 36px -4px rgba(212, 175, 55, 0.5);
+        box-shadow: 0 0 28px 6px rgba(247, 223, 220, 0.95), 0 0 0 12px rgba(255, 245, 245, 0), 0 14px 34px -4px rgba(45, 90, 54, 0.65);
       }
     }
     .btn-glow {
@@ -376,17 +392,17 @@
     <!-- =======================================================================
          1. FULL-SCREEN HERO SECTION (100svh EDGE-TO-EDGE PHOTO, NO ARCH FRAME)
             - Starts in .is-closeup (zoomed in on couple) with locked scroll.
+            - Top "✦ WEDDING INVITATION ✦" badge is hidden initially and slides
+              down from above the screen when "ENTER THE WEDDING" is clicked.
             - Bottom smooth fade with strictly non-overlapping vertical stack:
-              1) Bride & Groom Name (First letter capital: Abhijith & Reshma)
+              1) Bride & Groom Name (Alex Brush calligraphic uppercase 'A')
               2) Wedding Date & Venue below the name
               3) "ENTER THE WEDDING" button below the date
-            - Clicking button smoothly zooms the full-screen image out (.is-revealed)
-              without putting it inside a frame, and unlocks the remaining details!
          ======================================================================= -->
-    <section id="heroSection" class="is-closeup relative w-full flex flex-col justify-between overflow-hidden select-none">
+    <section id="heroSection" class="is-closeup relative w-full flex flex-col justify-between overflow-hidden select-none bg-[#FDFBF7]">
 
-      <!-- Full-Screen Edge-to-Edge Bride & Groom Photograph with Seamless Alpha Mask Fade -->
-      <div id="heroImageContainer" class="absolute inset-0 z-0 overflow-hidden bg-espresso">
+      <!-- Full-Screen Edge-to-Edge Bride & Groom Photograph with Seamless Downward Alpha Mask -->
+      <div class="hero-image-mask absolute inset-0 z-0 overflow-hidden">
         <img
           id="heroFullImage"
           src="pic1.jpg"
@@ -395,18 +411,24 @@
           class="w-full h-full object-cover object-[center_18%]"
         />
         <!-- Soft Top Vignette -->
-        <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/40 to-transparent pointer-events-none"></div>
+        <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/35 to-transparent pointer-events-none"></div>
 
-        <!-- Dark-to-Champagne Readability & Bottom Blend Gradient -->
+        <!-- Soft Mid-to-Lower Readability Wash Behind Text (Fades out before the bottom edge so no dark line is created) -->
         <div
-          class="absolute inset-x-0 bottom-0 h-[72%] pointer-events-none"
-          style="background: linear-gradient(180deg, rgba(28, 20, 16, 0) 0%, rgba(28, 20, 16, 0.62) 38%, rgba(28, 20, 16, 0.88) 70%, rgba(44, 34, 30, 0.72) 86%, rgba(253, 251, 247, 0.92) 96%, #FDFBF7 100%);"
+          class="absolute inset-x-0 bottom-0 h-[75%] pointer-events-none"
+          style="background: linear-gradient(180deg, rgba(28, 20, 16, 0) 0%, rgba(28, 20, 16, 0.46) 34%, rgba(28, 20, 16, 0.68) 64%, rgba(44, 34, 30, 0.38) 84%, rgba(253, 251, 247, 0) 100%);"
         ></div>
       </div>
 
-      <!-- Top Subtle Badge -->
-      <div class="relative z-10 text-center pt-6 px-4">
-        <span class="inline-block text-[10px] sm:text-xs uppercase tracking-[0.32em] text-gold-light/95 font-medium px-5 py-1.5 rounded-full border border-gold-light/40 bg-black/25 backdrop-blur-sm shadow-sm">
+      <!-- Seamless Multi-Stop Bottom Dissolve Overlay into #FDFBF7 (Eliminates any white horizontal line between Screen 1 & Screen 2) -->
+      <div
+        class="absolute inset-x-0 bottom-0 h-44 sm:h-52 pointer-events-none z-[5]"
+        style="background: linear-gradient(to bottom, rgba(253, 251, 247, 0) 0%, rgba(253, 251, 247, 0.35) 45%, rgba(253, 251, 247, 0.82) 78%, #FDFBF7 100%);"
+      ></div>
+
+      <!-- Top Badge: Hidden on opening screen, slides down from above when "ENTER THE WEDDING" is clicked -->
+      <div id="topInviteBadge" class="relative z-10 text-center pt-6 px-4">
+        <span class="inline-block text-[10px] sm:text-xs uppercase tracking-[0.32em] text-gold-light/95 font-medium px-5 py-1.5 rounded-full border border-gold-light/40 bg-black/25 backdrop-blur-sm">
           ✦ Wedding Invitation ✦
         </span>
       </div>
@@ -415,63 +437,57 @@
       <div class="relative z-10 w-full px-6 pt-16 pb-10 sm:pb-12 mt-auto flex flex-col items-center text-center">
 
         <!-- Intro Blessing Line -->
-        <p class="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-gold-light/90 font-medium mb-1 drop-shadow">
-          TOGETHER WITH THEIR FAMILIES
+        <p class="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-gold-light/90 font-medium mb-1">
+          Together With Their Families
         </p>
 
-        <!-- 1. BRIDE & GROOM'S NAME ('Alex Brush' script so uppercase 'A' is a true pointed calligraphic capital) -->
-        <h1 class="font-script text-5xl sm:text-7xl text-champagne py-4 px-3 leading-[1.45] drop-shadow-[0_3px_12px_rgba(0,0,0,0.85)]">
-          Abhijith &amp; Reshma
+        <!-- 1. BRIDE & GROOM'S NAME (Pure Crisp White Both Before & After Clicking "ENTER THE WEDDING") -->
+        <h1 class="font-script text-5xl sm:text-7xl text-white font-normal py-4 px-3 leading-[1.35] tracking-normal">
+          Abhijith <span class="text-white mx-1">&amp;</span> Reshma
         </h1>
 
         <!-- 2. WEDDING DATE & VENUE (Directly Below Name — Never Overlaps) -->
         <div class="mt-1 flex flex-col items-center">
-          <p class="font-serif text-xl sm:text-2xl font-medium text-gold-light tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
+          <p class="font-serif text-xl sm:text-2xl font-medium text-gold-light tracking-wide">
             Sunday, 20 December 2026
           </p>
-          <p class="text-[11px] sm:text-xs uppercase tracking-[0.22em] text-champagne/95 mt-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]">
-            HI-TECH AUDITORIUM • PALAKKAD, KERALA
+          <p class="text-[11px] sm:text-xs uppercase tracking-[0.22em] text-champagne/90 mt-1">
+            Hi-Tech Auditorium • Palakkad, Kerala
           </p>
         </div>
 
-        <!-- 3. "ENTER THE WEDDING" BUTTON (Directly Below Date — Never Overlaps) -->
+        <!-- 3. "ENTER THE WEDDING" BUTTON (Glowing Rose-Cream Background with Kerala Green Border & Green Letters) -->
         <div id="enterBtnWrapper" class="w-full flex flex-col items-center mt-6">
           <button
             id="enterWeddingBtn"
             type="button"
             onclick="openInvitation()"
-            class="btn-glow w-full max-w-[270px] py-3.5 px-7 rounded-full bg-gradient-to-r from-keralaGreen-deep via-keralaGreen to-keralaGreen-deep text-champagne font-serif text-base sm:text-lg tracking-[0.2em] uppercase font-semibold border-2 border-gold-light/85 flex items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer"
+            style="background: linear-gradient(135deg, #FFF5F5 0%, #F7DFDC 50%, #EED0CC 100%);"
+            class="btn-glow w-full max-w-[270px] py-3.5 px-7 rounded-full text-[#1F4428] font-serif text-base sm:text-lg tracking-[0.2em] uppercase font-semibold border-2 border-[#2D5A36] flex items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer"
           >
             <span>ENTER THE WEDDING</span>
           </button>
-          <span class="text-[10px] uppercase tracking-[0.22em] text-champagne/80 mt-2.5 drop-shadow">
+          <span class="text-[10px] uppercase tracking-[0.22em] text-champagne/75 mt-2.5">
             Tap to unveil our sacred celebration
           </span>
         </div>
 
-        <!-- 4. REVEALED QUOTE & SCROLL CUE (Crisp White Quote + Bright Elegant Golden-Yellow #FFE082 Muhurtham & Scroll Prompt) -->
-        <div id="heroExtraDetails" class="w-full flex flex-col items-center pb-6">
-          <div class="w-24 h-px bg-gradient-to-r from-transparent via-[#FFE082] to-transparent my-2.5"></div>
-          <p
-            class="font-serif italic text-base sm:text-lg text-white max-w-xs sm:max-w-md leading-relaxed font-medium"
-            style="text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.9);"
-          >
+        <!-- 4. REVEALED QUOTE & SCROLL CUE (Clean, Shadowless Typography with Darker Rich Golden-Amber Muhurtham Line) -->
+        <div id="heroExtraDetails" class="w-full flex flex-col items-center pb-8">
+          <p class="font-serif italic font-normal text-base sm:text-lg text-white max-w-xs sm:max-w-md leading-relaxed mt-2" style="text-shadow: none;">
             "Two souls with but a single thought, two hearts that beat as one."
           </p>
-          <p
-            class="text-xs sm:text-sm uppercase tracking-[0.24em] text-[#FFE082] font-bold mt-2.5"
-            style="text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.9);"
-          >
-            MUHURTHAM: 9:00 AM IST
+          <p class="font-sans text-[11px] sm:text-xs uppercase tracking-[0.26em] text-[#B8860B] font-medium mt-3" style="text-shadow: none;">
+            MUHURTHAM: 10:45 AM IST
           </p>
 
           <a
             href="#countdownSection"
-            class="mt-4 inline-flex flex-col items-center text-[#FFE082] hover:text-white transition-colors"
-            style="text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.9);"
+            class="mt-3.5 inline-flex flex-col items-center text-[#9A6F0A] hover:opacity-90 transition-opacity"
+            style="text-shadow: none;"
           >
-            <span class="text-[10px] sm:text-[11px] uppercase tracking-[0.26em] font-semibold mb-1">SCROLL DOWN FOR DETAILS</span>
-            <span class="text-lg leading-none animate-bounce font-bold">↓</span>
+            <span class="font-sans text-[10px] sm:text-[11px] uppercase tracking-[0.26em] font-medium mb-1">SCROLL DOWN FOR DETAILS</span>
+            <span class="text-sm font-medium leading-none">↓</span>
           </a>
         </div>
 
@@ -481,7 +497,7 @@
     <!-- =======================================================================
          2. AUSPICIOUS COUNTDOWN SECTION (SEAMLESS CONTINUOUS FLOW FROM HERO)
          ======================================================================= -->
-    <section id="countdownSection" class="relative -mt-6 pt-8 pb-6 px-6 text-center overflow-hidden">
+    <section id="countdownSection" class="relative pt-2 pb-6 px-6 text-center overflow-hidden bg-[#FDFBF7]">
       <div class="reveal-up w-full relative z-10">
         <!-- Floral Crest SVG -->
         <svg class="w-12 h-12 text-gold mx-auto mb-2" viewBox="0 0 100 100" fill="none">
@@ -490,10 +506,10 @@
         </svg>
 
         <p class="text-xs uppercase tracking-[0.28em] text-gold-dark font-semibold mb-1">
-          WITH THE BLESSINGS OF OUR PARENTS
+          With the blessings of our parents
         </p>
 
-        <h2 class="font-script text-5xl sm:text-6xl gold-gradient-text py-5 px-3 leading-[1.45] inline-block">
+        <h2 class="font-script text-5xl sm:text-6xl gold-gradient-text py-4 px-3 leading-[1.4] inline-block">
           Abhijith &amp; Reshma
         </h2>
 
@@ -501,7 +517,7 @@
           Countdown for our day
         </h3>
         <p class="text-[11px] uppercase tracking-[0.22em] text-espresso/65 mb-5">
-          Sunday, 20 December 2026 • 9:00 AM IST
+          Sunday, 20 December 2026 • 10:45 AM IST
         </p>
 
         <div class="grid grid-cols-4 gap-2.5 max-w-sm mx-auto">
@@ -654,9 +670,12 @@
               <p class="font-malayalam text-sm sm:text-base text-keralaGreen font-semibold tracking-wide mt-0.5">
                 ധനു മാസം അഞ്ചാം തീയതി • ഞായറാഴ്ച
               </p>
+              <p class="font-malayalam text-sm sm:text-base text-keralaGreen font-semibold tracking-wide mt-1 leading-relaxed">
+                രാവിലെ 10.45 നും 11.30 നും മദ്ധ്യേ
+              </p>
 
               <!-- Lower Calligraphic Flourish SVG -->
-              <svg class="w-44 sm:w-52 h-4 text-gold mt-1" viewBox="0 0 240 24" fill="none">
+              <svg class="w-44 sm:w-52 h-4 text-gold mt-1.5" viewBox="0 0 240 24" fill="none">
                 <path d="M10 12 C50 12 75 22 105 12 C112 10 116 18 120 20 C124 18 128 10 135 12 C165 22 190 12 230 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
                 <circle cx="120" cy="12" r="2.5" fill="currentColor"/>
               </svg>
@@ -667,7 +686,7 @@
               Muhurtham Time
             </span>
             <p class="font-serif font-bold text-xl sm:text-2xl text-gold-dark tracking-wide">
-              9:00 AM IST
+              10:45 AM IST
             </p>
           </div>
 
@@ -871,7 +890,7 @@
                 class="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <p class="font-script text-2xl text-center text-espresso/80 mt-3">Forever Begins</p>
+            <p class="font-script text-3xl text-center text-espresso/85 mt-3">Forever Begins</p>
           </div>
         </div>
 
@@ -886,7 +905,7 @@
                 class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <p class="font-script text-2xl text-center text-espresso/80 mt-3">Promised Hearts</p>
+            <p class="font-script text-3xl text-center text-espresso/85 mt-3">Promised Hearts</p>
           </div>
         </div>
 
@@ -901,7 +920,7 @@
                 class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <p class="font-script text-2xl text-center text-espresso/80 mt-3">Together in Love</p>
+            <p class="font-script text-3xl text-center text-espresso/85 mt-3">Together in Love</p>
           </div>
         </div>
       </div>
@@ -913,11 +932,11 @@
     <footer class="pt-10 pb-14 px-6 text-center relative overflow-hidden">
       <div class="w-40 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6"></div>
 
-      <h2 class="font-script text-5xl sm:text-6xl gold-gradient-text py-5 px-3 leading-[1.45] inline-block mb-1">
+      <h2 class="font-script text-5xl sm:text-6xl gold-gradient-text py-4 px-3 leading-[1.4] inline-block mb-1">
         Abhijith &amp; Reshma
       </h2>
       <p class="text-xs uppercase tracking-[0.25em] text-espresso/80 font-semibold mb-1">
-        20 December 2026 • 9:00 AM IST
+        20 December 2026 • 10:45 AM IST
       </p>
       <p class="text-xs uppercase tracking-[0.2em] text-gold-dark font-semibold mb-2">
         HI-TECH AUDITORIUM, PALAKAD, KERALA, 678004
@@ -964,7 +983,7 @@
       const heroSection = document.getElementById('heroSection');
       const musicToggle = document.getElementById('musicToggle');
 
-      // 1. Trigger smooth full-screen zoom-out on the hero image & reveal quote/scroll cue
+      // 1. Trigger smooth full-screen zoom-out on the hero image, slide down the top badge, & reveal quote/scroll cue
       heroSection.classList.remove('is-closeup');
       heroSection.classList.add('is-revealed');
 
@@ -1144,8 +1163,8 @@
     }
     animatePetals();
 
-    // 3. LIVE COUNTDOWN TIMER TO 20 DECEMBER 2026, 9:00 AM IST
-    const weddingTimestamp = new Date('2026-12-20T09:00:00+05:30').getTime();
+    // 3. LIVE COUNTDOWN TIMER TO 20 DECEMBER 2026, 10:45 AM IST
+    const weddingTimestamp = new Date('2026-12-20T10:45:00+05:30').getTime();
 
     function updateCountdown() {
       const now = new Date().getTime();
@@ -1204,9 +1223,9 @@
     // 6. SAVE TO GOOGLE CALENDAR
     function addToCalendar() {
       const title = encodeURIComponent("Abhijith & Reshma's Traditional Wedding Ceremony");
-      const details = encodeURIComponent("Join us to celebrate the auspicious wedding Muhurtham of Abhijith and Reshma at 9:00 AM IST at Hi-Tech Auditorium, Palakkad, Kerala, 678004.");
+      const details = encodeURIComponent("Join us to celebrate the auspicious wedding Muhurtham of Abhijith and Reshma at 10:45 AM IST (between 10:45 AM and 11:30 AM) at Hi-Tech Auditorium, Palakkad, Kerala, 678004.");
       const location = encodeURIComponent("HI-TECH AUDITORIUM, PALAKKAD, KERALA, 678004");
-      const dates = "20261220T033000Z/20261220T080000Z";
+      const dates = "20261220T051500Z/20261220T083000Z";
       const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
       window.open(url, '_blank');
     }
