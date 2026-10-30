@@ -379,12 +379,10 @@
   <!-- CONTINUOUS FALLING JASMINE & ROSE PETALS CANVAS -->
   <canvas id="petalCanvas" class="fixed inset-0 pointer-events-none z-40"></canvas>
 
-  <!-- PRELOADED AUDIO ELEMENTS FOR SONG 1, SONG 2, SONG 3, AND SONG 4 -->
+  <!-- PRELOADED AUDIO ELEMENTS FOR SONG 1 AND SONG 2 -->
   <div class="hidden" aria-hidden="true">
     <audio id="audio_song1" src="song1.mp3" preload="auto" loop></audio>
     <audio id="audio_song2" src="song2.mp3" preload="auto" loop></audio>
-    <audio id="audio_song3" src="song3.mp3" preload="auto" loop></audio>
-    <audio id="audio_song4" src="song4.mp3" preload="auto" loop></audio>
   </div>
 
   <!-- MINIMALIST CIRCULAR SPEAKER ICON & DROPDOWN SONG SELECTOR (TOP-RIGHT) -->
@@ -410,7 +408,7 @@
       </svg>
     </button>
 
-    <!-- Dropdown Menu for Selecting Song 1, Song 2, Song 3, Song 4 -->
+    <!-- Dropdown Menu for Selecting Song 1 & Song 2 -->
     <div
       id="songDropdownMenu"
       class="hidden mt-2 w-48 rounded-2xl glass-card shadow-2xl border border-gold/50 p-2 text-left z-50"
@@ -445,26 +443,6 @@
           class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
         >
           <span>Song 2</span>
-          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
-        </button>
-
-        <button
-          type="button"
-          onclick="selectWeddingSong('song3')"
-          id="btn_song3"
-          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
-        >
-          <span>Song 3</span>
-          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
-        </button>
-
-        <button
-          type="button"
-          onclick="selectWeddingSong('song4')"
-          id="btn_song4"
-          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
-        >
-          <span>Song 4</span>
           <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
         </button>
       </div>
@@ -538,14 +516,14 @@
           </p>
         </div>
 
-        <!-- 3. "ENTER THE WEDDING" BUTTON (Royal Green Background with Golden Border & Golden Words) -->
+        <!-- 3. "ENTER THE WEDDING" BUTTON (Elegant Golden Background with Complementary Border & Deep Espresso-Gold Letters) -->
         <div id="enterBtnWrapper" class="w-full flex flex-col items-center mt-6">
           <button
             id="enterWeddingBtn"
             type="button"
             onclick="openInvitation()"
-            style="background: linear-gradient(135deg, #1B3B22 0%, #23492B 50%, #1F4428 100%);"
-            class="btn-glow w-full max-w-[270px] py-3.5 px-7 rounded-full text-[#E6C786] font-serif text-base sm:text-lg tracking-[0.2em] uppercase font-semibold border-2 border-[#D4AF37] flex items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer"
+            style="background: linear-gradient(135deg, #F3DFA2 0%, #D4AF37 50%, #AA8018 100%);"
+            class="btn-glow w-full max-w-[270px] py-3.5 px-7 rounded-full text-[#2C1E0B] font-serif text-base sm:text-lg tracking-[0.2em] uppercase font-bold border-2 border-[#FFF6D6] flex items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer"
           >
             <span>ENTER THE WEDDING</span>
           </button>
@@ -704,7 +682,7 @@
         </div>
 
         <!-- CREAM ARCHED MANDAPAM CARD IN THE CENTER -->
-        <div class="relative z-10 rounded-t-[175px] rounded-b-3xl bg-gradient-to-b from-[#FFFDF9] via-[#FDFBF7] to-[#F7F1E5] px-5 sm:px-8 pt-12 pb-10 shadow-2xl border-2 border-gold-light/80 text-center overflow-hidden">
+        <div class="relative z-10 rounded-t-[175px] rounded-b-3xl bg-gradient-to-b from-[#FFFDF9] via-[#FDFBF7] to-[#F7F1E5] px-4 sm:px-8 pt-12 pb-10 shadow-2xl border-2 border-gold-light/80 text-center overflow-hidden">
           <div class="absolute inset-2.5 rounded-t-[168px] rounded-b-2xl border border-gold/30 pointer-events-none"></div>
 
           <!-- Auspicious Sunburst Icon inside Arch Top -->
@@ -714,11 +692,13 @@
             </svg>
           </div>
 
-          <span class="relative z-10 inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-[9px] sm:text-[11px] uppercase tracking-[0.16em] sm:tracking-[0.24em] text-keralaGreen font-semibold bg-keralaGreen/10 px-3.5 py-1 rounded-full border border-keralaGreen/25 mb-3">
-            <span>✦</span>
-            <span>AUSPICIOUS WEDDING MUHURTHAM</span>
-            <span>✦</span>
-          </span>
+          <div class="relative z-10 w-full flex justify-center mb-3">
+            <span class="inline-flex items-center justify-center gap-1 sm:gap-1.5 max-w-full text-[8.5px] sm:text-[11px] uppercase tracking-[0.11em] sm:tracking-[0.22em] text-keralaGreen font-semibold bg-keralaGreen/10 px-3 sm:px-4 py-1 rounded-full border border-keralaGreen/25 mx-auto">
+              <span class="shrink-0">✦</span>
+              <span class="text-center">AUSPICIOUS WEDDING MUHURTHAM</span>
+              <span class="shrink-0">✦</span>
+            </span>
+          </div>
 
           <h4 class="relative z-10 font-serif text-3xl sm:text-4xl font-bold text-espresso">
             Main Traditional Wedding
@@ -1123,7 +1103,7 @@
        INTERACTIVE SCRIPTS
        ========================================================================= -->
   <script>
-    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & 4-SONG DROPDOWN AUDIO SYSTEM
+    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & 2-SONG DROPDOWN AUDIO SYSTEM
     let isMusicPlaying = false;
     let isMuted = false;
     let currentSongKey = 'song1';
@@ -1131,10 +1111,10 @@
     let melodyLoop = null;
     let isInvitationOpen = false;
 
-    // 4-Song Configuration:
-    // Place song1.mp3, song2.mp3, song3.mp3, song4.mp3 in your project folder (or upload via dropdown).
+    // 2-Song Configuration:
+    // Place song1.mp3 and song2.mp3 in your project folder.
     // If an mp3 file is not yet uploaded, a distinct gentle instrumental melody plays as fallback.
-    const songIds = ['song1', 'song2', 'song3', 'song4'];
+    const songIds = ['song1', 'song2'];
     const fallbackMelodies = {
       song1: {
         bpm: 68,
@@ -1152,24 +1132,6 @@
           ['B3', 'D4', 'F#4', 'A4'],
           ['G3', 'B3', 'D4', 'F#4'],
           ['A3', 'C#4', 'E4', 'G4']
-        ]
-      },
-      song3: {
-        bpm: 62,
-        chords: [
-          ['F4', 'A4', 'C5', 'E5'],
-          ['D4', 'F4', 'A4', 'C5'],
-          ['Bb3', 'D4', 'F4', 'A4'],
-          ['C4', 'E4', 'G4', 'Bb4']
-        ]
-      },
-      song4: {
-        bpm: 78,
-        chords: [
-          ['G4', 'B4', 'D5', 'F#5'],
-          ['E4', 'G4', 'B4', 'D5'],
-          ['C4', 'E4', 'G4', 'B4'],
-          ['D4', 'F#4', 'A4', 'C5']
         ]
       }
     };
