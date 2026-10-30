@@ -202,17 +202,41 @@
       animation: garlandSwingRight 6s ease-in-out 1.4s infinite;
     }
 
-    /* Shimmering Rose-Cream Button Glow */
+    /* Shimmering Royal Green & Gold Button Glow */
     @keyframes buttonPulse {
       0%, 100% {
-        box-shadow: 0 0 18px 2px rgba(247, 223, 220, 0.72), 0 0 0 0 rgba(255, 245, 245, 0.8), 0 10px 28px -4px rgba(27, 59, 34, 0.45);
+        box-shadow: 0 0 16px 2px rgba(212, 175, 55, 0.45), 0 0 0 0 rgba(230, 199, 134, 0.55), 0 10px 28px -4px rgba(15, 36, 20, 0.7);
       }
       50% {
-        box-shadow: 0 0 28px 6px rgba(247, 223, 220, 0.95), 0 0 0 12px rgba(255, 245, 245, 0), 0 14px 34px -4px rgba(45, 90, 54, 0.65);
+        box-shadow: 0 0 26px 5px rgba(212, 175, 55, 0.75), 0 0 0 12px rgba(230, 199, 134, 0), 0 14px 34px -4px rgba(15, 36, 20, 0.85);
       }
     }
     .btn-glow {
       animation: buttonPulse 2.6s infinite;
+    }
+
+    /* Interactive 5-Photo Stacked Blur Slider Styles */
+    .gallery-stack-stage {
+      position: relative;
+      height: 460px;
+      touch-action: pan-y;
+      user-select: none;
+    }
+    @media (min-width: 640px) {
+      .gallery-stack-stage {
+        height: 500px;
+      }
+    }
+    .gallery-slide-card {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 82%;
+      max-width: 310px;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                  filter 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, filter, opacity;
     }
 
     /* Scroll Reveal Animations */
@@ -273,14 +297,8 @@
       if (step === 0) {
         img.dataset.fallbackStep = '1';
         img.src = baseName + '.jpeg';
-      } else if (step === 1 && baseName === 'pic4') {
+      } else if (step < 2) {
         img.dataset.fallbackStep = '2';
-        img.src = 'pic3.jpg';
-      } else if (step === 2 && baseName === 'pic4') {
-        img.dataset.fallbackStep = '3';
-        img.src = 'pic3.jpeg';
-      } else if (step < 4) {
-        img.dataset.fallbackStep = '4';
         img.src = fallbackUrl;
       }
     }
@@ -361,12 +379,21 @@
   <!-- CONTINUOUS FALLING JASMINE & ROSE PETALS CANVAS -->
   <canvas id="petalCanvas" class="fixed inset-0 pointer-events-none z-40"></canvas>
 
-  <!-- MINIMALIST CIRCULAR SPEAKER ICON TOGGLE (TOP-RIGHT) -->
-  <div class="fixed top-4 right-4 z-50">
+  <!-- PRELOADED AUDIO ELEMENTS FOR SONG 1, SONG 2, SONG 3, AND SONG 4 -->
+  <div class="hidden" aria-hidden="true">
+    <audio id="audio_song1" src="song1.mp3" preload="auto" loop></audio>
+    <audio id="audio_song2" src="song2.mp3" preload="auto" loop></audio>
+    <audio id="audio_song3" src="song3.mp3" preload="auto" loop></audio>
+    <audio id="audio_song4" src="song4.mp3" preload="auto" loop></audio>
+  </div>
+
+  <!-- MINIMALIST CIRCULAR SPEAKER ICON & DROPDOWN SONG SELECTOR (TOP-RIGHT) -->
+  <div id="musicControlWrapper" class="fixed top-4 right-4 z-50 flex flex-col items-end">
     <button
       id="musicToggle"
-      aria-label="Toggle Mute Wedding Music"
-      title="Mute / Unmute Music"
+      type="button"
+      aria-label="Select Wedding Music"
+      title="Select Wedding Song"
       class="hidden w-11 h-11 rounded-full glass-card shadow-lg border border-gold/50 text-espresso items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer"
     >
       <!-- Speaker ON (Unmuted) Icon -->
@@ -382,6 +409,66 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M17 9l6 6"></path>
       </svg>
     </button>
+
+    <!-- Dropdown Menu for Selecting Song 1, Song 2, Song 3, Song 4 -->
+    <div
+      id="songDropdownMenu"
+      class="hidden mt-2 w-48 rounded-2xl glass-card shadow-2xl border border-gold/50 p-2 text-left z-50"
+    >
+      <div class="px-2.5 py-1.5 border-b border-gold/25 flex items-center justify-between">
+        <span class="text-[10px] uppercase tracking-[0.2em] text-gold-dark font-semibold">Select Audio</span>
+        <button
+          type="button"
+          onclick="toggleMuteCurrentSong()"
+          id="muteActionBtn"
+          class="text-[10px] uppercase tracking-wider font-semibold text-keralaGreen hover:underline cursor-pointer"
+        >
+          Mute
+        </button>
+      </div>
+
+      <div class="py-1 space-y-1">
+        <button
+          type="button"
+          onclick="selectWeddingSong('song1')"
+          id="btn_song1"
+          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer bg-gold/20 text-espresso"
+        >
+          <span>Song 1</span>
+          <span class="song-indicator text-[10px] text-gold-dark">● Playing</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="selectWeddingSong('song2')"
+          id="btn_song2"
+          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
+        >
+          <span>Song 2</span>
+          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="selectWeddingSong('song3')"
+          id="btn_song3"
+          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
+        >
+          <span>Song 3</span>
+          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="selectWeddingSong('song4')"
+          id="btn_song4"
+          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
+        >
+          <span>Song 4</span>
+          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- =========================================================================
@@ -436,11 +523,6 @@
       <!-- Bottom Non-Overlapping Vertical Flex Stack -->
       <div class="relative z-10 w-full px-6 pt-16 pb-10 sm:pb-12 mt-auto flex flex-col items-center text-center">
 
-        <!-- Intro Blessing Line -->
-        <p class="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-gold-light/90 font-medium mb-1">
-          Together With Their Families
-        </p>
-
         <!-- 1. BRIDE & GROOM'S NAME (Pure Crisp White Both Before & After Clicking "ENTER THE WEDDING") -->
         <h1 class="font-script text-5xl sm:text-7xl text-white font-normal py-4 px-3 leading-[1.35] tracking-normal">
           Abhijith <span class="text-white mx-1">&amp;</span> Reshma
@@ -456,14 +538,14 @@
           </p>
         </div>
 
-        <!-- 3. "ENTER THE WEDDING" BUTTON (Glowing Rose-Cream Background with Kerala Green Border & Green Letters) -->
+        <!-- 3. "ENTER THE WEDDING" BUTTON (Royal Green Background with Golden Border & Golden Words) -->
         <div id="enterBtnWrapper" class="w-full flex flex-col items-center mt-6">
           <button
             id="enterWeddingBtn"
             type="button"
             onclick="openInvitation()"
-            style="background: linear-gradient(135deg, #FFF5F5 0%, #F7DFDC 50%, #EED0CC 100%);"
-            class="btn-glow w-full max-w-[270px] py-3.5 px-7 rounded-full text-[#1F4428] font-serif text-base sm:text-lg tracking-[0.2em] uppercase font-semibold border-2 border-[#2D5A36] flex items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer"
+            style="background: linear-gradient(135deg, #1B3B22 0%, #23492B 50%, #1F4428 100%);"
+            class="btn-glow w-full max-w-[270px] py-3.5 px-7 rounded-full text-[#E6C786] font-serif text-base sm:text-lg tracking-[0.2em] uppercase font-semibold border-2 border-[#D4AF37] flex items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer"
           >
             <span>ENTER THE WEDDING</span>
           </button>
@@ -475,10 +557,10 @@
         <!-- 4. REVEALED QUOTE & SCROLL CUE (Clean, Shadowless Typography with Darker Rich Golden-Amber Muhurtham Line) -->
         <div id="heroExtraDetails" class="w-full flex flex-col items-center pb-8">
           <p class="font-serif italic font-normal text-base sm:text-lg text-white max-w-xs sm:max-w-md leading-relaxed mt-2" style="text-shadow: none;">
-            "Two souls with but a single thought, two hearts that beat as one."
+            "Two souls but a single thought, two hearts that beat as one."
           </p>
           <p class="font-sans text-[11px] sm:text-xs uppercase tracking-[0.26em] text-[#B8860B] font-medium mt-3" style="text-shadow: none;">
-            MUHURTHAM: 10:45 AM IST
+            MUHURTHAM: 10.45am to 11.30am
           </p>
 
           <a
@@ -505,19 +587,23 @@
           <circle cx="50" cy="50" r="6" fill="currentColor"/>
         </svg>
 
-        <p class="text-xs uppercase tracking-[0.28em] text-gold-dark font-semibold mb-1">
-          With the blessings of our parents
+        <p class="text-xs uppercase tracking-[0.35em] text-gold-dark font-semibold mb-1">
+          With the blessings of their parents
         </p>
 
         <h2 class="font-script text-5xl sm:text-6xl gold-gradient-text py-4 px-3 leading-[1.4] inline-block">
           Abhijith &amp; Reshma
         </h2>
 
+        <p class="text-xs uppercase tracking-[0.35em] text-gold-dark font-semibold mt-0.5 mb-4">
+          Begin their forever together
+        </p>
+
         <h3 class="font-serif text-2xl sm:text-3xl text-espresso font-bold mb-1">
-          Countdown for our day
+          Countdown for their day
         </h3>
         <p class="text-[11px] uppercase tracking-[0.22em] text-espresso/65 mb-5">
-          Sunday, 20 December 2026 • 10:45 AM IST
+          Sunday, 20 December 2026 • 10.45am to 11.30am
         </p>
 
         <div class="grid grid-cols-4 gap-2.5 max-w-sm mx-auto">
@@ -640,7 +726,7 @@
 
           <!-- 1. Exact Invitation Sentence -->
           <p class="relative z-10 font-serif italic text-base sm:text-lg text-espresso/85 mt-3 leading-relaxed max-w-sm mx-auto">
-            Amidst the glow of traditional lamps, fragrant Mullappoo garlands, and soulful Nadaswaram melodies in serene Palakkad, we warmly invite you to bless Abhijith &amp; Reshma as they begin their journey together on this auspicious day, followed by a grand Kerala Sadhya.
+            Amidst the glow of traditional lamps, fragrant jasmine garlands, and soulful Nadaswaram melodies on this blessed and joyous occasion, we cordially invite your esteemed presence to bless Abhijith &amp; Reshma as they begin their beautiful journey together on this auspicious day.
           </p>
 
           <!-- 2. Unboxed Vertical Date, Calligraphic Malayalam Date & Muhurtham Time -->
@@ -686,7 +772,7 @@
               Muhurtham Time
             </span>
             <p class="font-serif font-bold text-xl sm:text-2xl text-gold-dark tracking-wide">
-              10:45 AM IST
+              10.45am to 11.30am
             </p>
           </div>
 
@@ -743,9 +829,6 @@
          ======================================================================= -->
     <section id="guestbookSection" class="py-10 px-6 relative overflow-hidden">
       <div class="reveal-up text-center mb-8 relative z-10">
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold/15 border border-gold/40 text-gold-dark text-[11px] uppercase tracking-[0.25em] font-semibold mb-2">
-          ★ Main Attraction ★
-        </span>
         <h3 class="font-serif text-3xl sm:text-4xl text-espresso font-bold">
           Guest Entries &amp; Wishes Wall
         </h3>
@@ -807,9 +890,8 @@
                 id="guestAttendance"
                 class="w-full px-3.5 py-3 rounded-xl bg-white/90 border border-gold/35 focus:outline-none focus:border-gold-dark text-sm text-espresso"
               >
-                <option value="Attending (With Family)">Joyfully Attending</option>
-                <option value="Attending Solo">Attending Solo</option>
-                <option value="Sending Warm Wishes">Sending Blessings From Afar</option>
+                <option value="Joyfully attending">Joyfully attending</option>
+                <option value="Sending blessings from afar">Sending blessings from afar</option>
               </select>
             </div>
           </div>
@@ -823,8 +905,8 @@
               <button type="button" onclick="insertQuickWish('Wishing Abhijith & Reshma a lifetime of love, laughter, and endless happiness! ❤️✨')" class="text-xs px-3 py-1.5 rounded-full bg-ivory hover:bg-gold/20 border border-gold/30 text-espresso transition-colors cursor-pointer">
                 ✨ Lifetime of happiness!
               </button>
-              <button type="button" onclick="insertQuickWish('So excited to celebrate with you both at Hi-Tech Auditorium, Palakkad on Dec 20! 🌸🎊')" class="text-xs px-3 py-1.5 rounded-full bg-ivory hover:bg-gold/20 border border-gold/30 text-espresso transition-colors cursor-pointer">
-                🌸 See you in Palakkad!
+              <button type="button" onclick="insertQuickWish('So excited to celebrate the beautiful beginnining with both of you 🌸🎊')" class="text-xs px-3 py-1.5 rounded-full bg-ivory hover:bg-gold/20 border border-gold/30 text-espresso transition-colors cursor-pointer">
+                🌸 See you at the wedding
               </button>
               <button type="button" onclick="insertQuickWish('May God bless your sacred union with eternal harmony and prosperity! 🙏💫')" class="text-xs px-3 py-1.5 rounded-full bg-ivory hover:bg-gold/20 border border-gold/30 text-espresso transition-colors cursor-pointer">
                 🙏 Divine blessings!
@@ -869,59 +951,130 @@
     </section>
 
     <!-- =======================================================================
-         5. PHOTO GALLERY (SUPPORTS BOTH .jpg AND .jpeg AUTOMATICALLY)
+         5. 5-PHOTO SLIDING GALLERY WITH STACKED BLURRED PREVIEW BEHIND & BELOW
          ======================================================================= -->
-    <section class="py-10 px-6 relative overflow-hidden">
-      <div class="reveal-up text-center mb-10 relative z-10">
+    <section class="py-10 px-6 relative overflow-hidden select-none">
+      <div class="reveal-up text-center mb-8 relative z-10">
         <span class="text-xs uppercase tracking-[0.3em] text-gold-dark">Captured Moments</span>
         <h3 class="font-serif text-3xl sm:text-4xl text-espresso font-semibold mt-1">Glimpses of Us</h3>
-        <p class="text-xs text-espresso/60 mt-1">Tap any portrait to view full screen</p>
+        <p class="text-xs text-espresso/60 mt-1">Tap the active portrait to view full screen</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 relative z-10">
-        <!-- Photo 1: pic1.jpg / pic1.jpeg -->
-        <div class="reveal-scale group cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
-          <div class="bg-white p-3 pb-7 rounded-2xl shadow-lg border border-gold/25 transform -rotate-1 group-hover:rotate-0 transition-all duration-300">
-            <div class="overflow-hidden rounded-xl aspect-[4/5]">
-              <img
-                src="pic1.jpg"
-                onerror="handleSmartImageFallback(this, 'pic1', 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=900&q=80')"
-                alt="Abhijith and Reshma — Forever Begins"
-                class="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-500"
-              />
+      <!-- Interactive 5-Photo Stacked Carousel Container -->
+      <div class="reveal-scale relative z-10 max-w-sm mx-auto">
+        <div id="gallerySliderStage" class="gallery-stack-stage">
+          <!-- Slide 1: pic2.jpg / pic2.jpeg -->
+          <div class="gallery-slide-card cursor-pointer" data-index="0" onclick="handleGalleryCardClick(0)">
+            <div class="bg-white p-3 pb-6 rounded-2xl shadow-xl border border-gold/35">
+              <div class="overflow-hidden rounded-xl aspect-[4/5]">
+                <img
+                  src="pic2.jpg"
+                  onerror="handleSmartImageFallback(this, 'pic2', 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=80')"
+                  alt="Abhijith and Reshma — Forever Begins"
+                  class="w-full h-full object-cover object-center pointer-events-none"
+                />
+              </div>
+              <p class="font-script text-3xl text-center text-espresso/85 mt-3">Forever Begins</p>
             </div>
-            <p class="font-script text-3xl text-center text-espresso/85 mt-3">Forever Begins</p>
           </div>
+
+          <!-- Slide 2: pic3.jpg / pic3.jpeg -->
+          <div class="gallery-slide-card cursor-pointer" data-index="1" onclick="handleGalleryCardClick(1)">
+            <div class="bg-white p-3 pb-6 rounded-2xl shadow-xl border border-gold/35">
+              <div class="overflow-hidden rounded-xl aspect-[4/5]">
+                <img
+                  src="pic3.jpg"
+                  onerror="handleSmartImageFallback(this, 'pic3', 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80')"
+                  alt="Abhijith and Reshma — Promised Hearts"
+                  class="w-full h-full object-cover object-center pointer-events-none"
+                />
+              </div>
+              <p class="font-script text-3xl text-center text-espresso/85 mt-3">Promised Hearts</p>
+            </div>
+          </div>
+
+          <!-- Slide 3: pic4.jpg / pic4.jpeg -->
+          <div class="gallery-slide-card cursor-pointer" data-index="2" onclick="handleGalleryCardClick(2)">
+            <div class="bg-white p-3 pb-6 rounded-2xl shadow-xl border border-gold/35">
+              <div class="overflow-hidden rounded-xl aspect-[4/5]">
+                <img
+                  src="pic4.jpg"
+                  onerror="handleSmartImageFallback(this, 'pic4', 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=900&q=80')"
+                  alt="Abhijith and Reshma — Together in Love"
+                  class="w-full h-full object-cover object-center pointer-events-none"
+                />
+              </div>
+              <p class="font-script text-3xl text-center text-espresso/85 mt-3">Together in Love</p>
+            </div>
+          </div>
+
+          <!-- Slide 4: pic5.jpg / pic5.jpeg -->
+          <div class="gallery-slide-card cursor-pointer" data-index="3" onclick="handleGalleryCardClick(3)">
+            <div class="bg-white p-3 pb-6 rounded-2xl shadow-xl border border-gold/35">
+              <div class="overflow-hidden rounded-xl aspect-[4/5]">
+                <img
+                  src="pic5.jpg"
+                  onerror="handleSmartImageFallback(this, 'pic5', 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80')"
+                  alt="Abhijith and Reshma — Sacred Moments"
+                  class="w-full h-full object-cover object-center pointer-events-none"
+                />
+              </div>
+              <p class="font-script text-3xl text-center text-espresso/85 mt-3">Sacred Moments</p>
+            </div>
+          </div>
+
+          <!-- Slide 5: pic6.jpg / pic6.jpeg -->
+          <div class="gallery-slide-card cursor-pointer" data-index="4" onclick="handleGalleryCardClick(4)">
+            <div class="bg-white p-3 pb-6 rounded-2xl shadow-xl border border-gold/35">
+              <div class="overflow-hidden rounded-xl aspect-[4/5]">
+                <img
+                  src="pic6.jpg"
+                  onerror="handleSmartImageFallback(this, 'pic6', 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=900&q=80')"
+                  alt="Abhijith and Reshma — Endless Joy"
+                  class="w-full h-full object-cover object-center pointer-events-none"
+                />
+              </div>
+              <p class="font-script text-3xl text-center text-espresso/85 mt-3">Endless Joy</p>
+            </div>
+          </div>
+
+          <!-- Left & Right Slide Controls -->
+          <button
+            type="button"
+            onclick="changeGallerySlide(-1)"
+            aria-label="Previous Photo"
+            class="absolute left-0 top-[40%] -translate-y-1/2 z-30 w-10 h-10 rounded-full glass-card shadow-md border border-gold/50 text-gold-dark flex items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <button
+            type="button"
+            onclick="changeGallerySlide(1)"
+            aria-label="Next Photo"
+            class="absolute right-0 top-[40%] -translate-y-1/2 z-30 w-10 h-10 rounded-full glass-card shadow-md border border-gold/50 text-gold-dark flex items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
         </div>
 
-        <!-- Photo 2: pic2.jpg / pic2.jpeg -->
-        <div class="reveal-scale group cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
-          <div class="bg-white p-3 pb-7 rounded-2xl shadow-lg border border-gold/25 transform rotate-1 group-hover:rotate-0 transition-all duration-300">
-            <div class="overflow-hidden rounded-xl aspect-[4/5]">
-              <img
-                src="pic2.jpg"
-                onerror="handleSmartImageFallback(this, 'pic2', 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=80')"
-                alt="Abhijith and Reshma — Promised Hearts"
-                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <p class="font-script text-3xl text-center text-espresso/85 mt-3">Promised Hearts</p>
+        <!-- Slide Indicator Dots & "Slide for more" Instruction -->
+        <div class="mt-3 flex flex-col items-center">
+          <div id="galleryDots" class="flex items-center gap-2 mb-2">
+            <button type="button" onclick="goToGallerySlide(0)" class="w-2.5 h-2.5 rounded-full bg-gold-dark transition-all"></button>
+            <button type="button" onclick="goToGallerySlide(1)" class="w-2 h-2 rounded-full bg-gold/35 transition-all"></button>
+            <button type="button" onclick="goToGallerySlide(2)" class="w-2 h-2 rounded-full bg-gold/35 transition-all"></button>
+            <button type="button" onclick="goToGallerySlide(3)" class="w-2 h-2 rounded-full bg-gold/35 transition-all"></button>
+            <button type="button" onclick="goToGallerySlide(4)" class="w-2 h-2 rounded-full bg-gold/35 transition-all"></button>
           </div>
-        </div>
-
-        <!-- Photo 3: pic4.jpg / pic4.jpeg / pic3.jpg / pic3.jpeg -->
-        <div class="reveal-scale group cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
-          <div class="bg-white p-3 pb-7 rounded-2xl shadow-lg border border-gold/25 transform -rotate-1 group-hover:rotate-0 transition-all duration-300">
-            <div class="overflow-hidden rounded-xl aspect-[4/5]">
-              <img
-                src="pic4.jpg"
-                onerror="handleSmartImageFallback(this, 'pic4', 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80')"
-                alt="Abhijith and Reshma — Together in Love"
-                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <p class="font-script text-3xl text-center text-espresso/85 mt-3">Together in Love</p>
-          </div>
+          <p class="text-[11px] uppercase tracking-[0.26em] text-gold-dark/90 font-semibold flex items-center gap-2">
+            <span>←</span>
+            <span>Slide for more</span>
+            <span>→</span>
+          </p>
         </div>
       </div>
     </section>
@@ -936,7 +1089,7 @@
         Abhijith &amp; Reshma
       </h2>
       <p class="text-xs uppercase tracking-[0.25em] text-espresso/80 font-semibold mb-1">
-        20 December 2026 • 10:45 AM IST
+        20 December 2026 • 10.45am to 11.30am
       </p>
       <p class="text-xs uppercase tracking-[0.2em] text-gold-dark font-semibold mb-2">
         HI-TECH AUDITORIUM, PALAKAD, KERALA, 678004
@@ -970,11 +1123,56 @@
        INTERACTIVE SCRIPTS
        ========================================================================= -->
   <script>
-    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & AUDIO
+    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & 4-SONG DROPDOWN AUDIO SYSTEM
     let isMusicPlaying = false;
+    let isMuted = false;
+    let currentSongKey = 'song1';
     let synth = null;
     let melodyLoop = null;
     let isInvitationOpen = false;
+
+    // 4-Song Configuration:
+    // Place song1.mp3, song2.mp3, song3.mp3, song4.mp3 in your project folder (or upload via dropdown).
+    // If an mp3 file is not yet uploaded, a distinct gentle instrumental melody plays as fallback.
+    const songIds = ['song1', 'song2', 'song3', 'song4'];
+    const fallbackMelodies = {
+      song1: {
+        bpm: 68,
+        chords: [
+          ['C4', 'E4', 'G4', 'B4'],
+          ['A3', 'C4', 'E4', 'G4'],
+          ['F3', 'A3', 'C4', 'E4'],
+          ['G3', 'B3', 'D4', 'F4']
+        ]
+      },
+      song2: {
+        bpm: 74,
+        chords: [
+          ['D4', 'F#4', 'A4', 'C#5'],
+          ['B3', 'D4', 'F#4', 'A4'],
+          ['G3', 'B3', 'D4', 'F#4'],
+          ['A3', 'C#4', 'E4', 'G4']
+        ]
+      },
+      song3: {
+        bpm: 62,
+        chords: [
+          ['F4', 'A4', 'C5', 'E5'],
+          ['D4', 'F4', 'A4', 'C5'],
+          ['Bb3', 'D4', 'F4', 'A4'],
+          ['C4', 'E4', 'G4', 'Bb4']
+        ]
+      },
+      song4: {
+        bpm: 78,
+        chords: [
+          ['G4', 'B4', 'D5', 'F#5'],
+          ['E4', 'G4', 'B4', 'D5'],
+          ['C4', 'E4', 'G4', 'B4'],
+          ['D4', 'F#4', 'A4', 'C5']
+        ]
+      }
+    };
 
     function openInvitation() {
       if (isInvitationOpen) return;
@@ -990,8 +1188,8 @@
       // 2. Unlock page scrolling so user can explore all remaining details below
       document.body.classList.remove('stage-locked');
 
-      // 3. Start ambient music & show minimalist speaker button in top-right
-      startAmbientMusic();
+      // 3. Play Song 1 by default & show minimalist speaker button in top-right
+      selectWeddingSong('song1', false);
       musicToggle.classList.remove('hidden');
       musicToggle.classList.add('flex');
 
@@ -1004,6 +1202,8 @@
 
     function returnToCoverScreen() {
       const heroSection = document.getElementById('heroSection');
+      const dropdown = document.getElementById('songDropdownMenu');
+      if (dropdown) dropdown.classList.add('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
       setTimeout(() => {
@@ -1014,8 +1214,25 @@
       }, 450);
     }
 
-    async function startAmbientMusic() {
-      if (isMusicPlaying) return;
+    function stopAllAudioTracks() {
+      songIds.forEach(key => {
+        const audioEl = document.getElementById('audio_' + key);
+        if (audioEl) {
+          audioEl.pause();
+          audioEl.currentTime = 0;
+        }
+      });
+      try {
+        if (melodyLoop) {
+          melodyLoop.stop();
+          melodyLoop.dispose();
+          melodyLoop = null;
+        }
+        Tone.Transport.stop();
+      } catch (e) {}
+    }
+
+    async function startFallbackSynthForSong(songKey) {
       try {
         await Tone.start();
         if (!synth) {
@@ -1023,44 +1240,125 @@
             oscillator: { type: 'sine' },
             envelope: { attack: 0.8, decay: 1.5, sustain: 0.4, release: 2.5 }
           }).toDestination();
-          synth.volume.value = -18;
-
-          const chords = [
-            ['C4', 'E4', 'G4', 'B4'],
-            ['A3', 'C4', 'E4', 'G4'],
-            ['F3', 'A3', 'C4', 'E4'],
-            ['G3', 'B3', 'D4', 'F4']
-          ];
-          let chordIdx = 0;
-
-          melodyLoop = new Tone.Loop((time) => {
-            synth.triggerAttackRelease(chords[chordIdx], '2n', time);
-            chordIdx = (chordIdx + 1) % chords.length;
-          }, '1m').start(0);
-
-          Tone.Transport.bpm.value = 68;
+          synth.volume.value = -16;
         }
+        if (melodyLoop) {
+          melodyLoop.stop();
+          melodyLoop.dispose();
+        }
+        const config = fallbackMelodies[songKey] || fallbackMelodies.song1;
+        let chordIdx = 0;
+        Tone.Transport.bpm.value = config.bpm;
+        melodyLoop = new Tone.Loop((time) => {
+          synth.triggerAttackRelease(config.chords[chordIdx], '2n', time);
+          chordIdx = (chordIdx + 1) % config.chords.length;
+        }, '1m').start(0);
+
         Tone.Transport.start();
         isMusicPlaying = true;
+        isMuted = false;
         updateMusicUI(true);
       } catch (e) {
         console.log('Audio waiting for user gesture');
       }
     }
 
-    document.getElementById('musicToggle').addEventListener('click', () => {
-      if (!synth) {
-        startAmbientMusic();
-        return;
+    function selectWeddingSong(songKey, closeDropdown = true) {
+      currentSongKey = songKey;
+      isMuted = false;
+      stopAllAudioTracks();
+
+      const audioEl = document.getElementById('audio_' + songKey);
+      if (audioEl) {
+        // Attempt to play the <audio> file (song1.mp3, song2.mp3, song3.mp3, song4.mp3 or uploaded file)
+        const playPromise = audioEl.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              isMusicPlaying = true;
+              updateMusicUI(true);
+            })
+            .catch(() => {
+              // If mp3 file is not found yet, play the distinct ambient melody for this song slot
+              startFallbackSynthForSong(songKey);
+            });
+        } else {
+          startFallbackSynthForSong(songKey);
+        }
+      } else {
+        startFallbackSynthForSong(songKey);
       }
-      if (isMusicPlaying) {
-        Tone.Transport.pause();
+
+      updateSongDropdownUI();
+      if (closeDropdown) {
+        const dropdown = document.getElementById('songDropdownMenu');
+        if (dropdown) dropdown.classList.add('hidden');
+      }
+    }
+
+    function toggleMuteCurrentSong() {
+      if (isMusicPlaying && !isMuted) {
+        stopAllAudioTracks();
         isMusicPlaying = false;
+        isMuted = true;
         updateMusicUI(false);
       } else {
-        Tone.Transport.start();
-        isMusicPlaying = true;
-        updateMusicUI(true);
+        isMuted = false;
+        selectWeddingSong(currentSongKey, false);
+      }
+      updateSongDropdownUI();
+    }
+
+    function handleCustomSongUpload(event, songKey) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const audioEl = document.getElementById('audio_' + songKey);
+      if (audioEl) {
+        const objectUrl = URL.createObjectURL(file);
+        audioEl.src = objectUrl;
+        audioEl.load();
+        selectWeddingSong(songKey, false);
+      }
+    }
+
+    function updateSongDropdownUI() {
+      songIds.forEach(key => {
+        const btn = document.getElementById('btn_' + key);
+        if (!btn) return;
+        const indicator = btn.querySelector('.song-indicator');
+        if (key === currentSongKey) {
+          btn.className = 'song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer bg-gold/25 text-espresso';
+          if (indicator) {
+            indicator.classList.remove('hidden');
+            indicator.textContent = isMuted ? '○ Paused' : '● Playing';
+          }
+        } else {
+          btn.className = 'song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80';
+          if (indicator) indicator.classList.add('hidden');
+        }
+      });
+
+      const muteBtn = document.getElementById('muteActionBtn');
+      if (muteBtn) {
+        muteBtn.textContent = isMuted ? 'Unmute' : 'Mute';
+      }
+    }
+
+    // Clicking the speaker icon opens/closes the Song 1 - 4 dropdown menu
+    document.getElementById('musicToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dropdown = document.getElementById('songDropdownMenu');
+      if (dropdown) {
+        dropdown.classList.toggle('hidden');
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const wrapper = document.getElementById('musicControlWrapper');
+      const dropdown = document.getElementById('songDropdownMenu');
+      if (wrapper && dropdown && !wrapper.contains(e.target)) {
+        dropdown.classList.add('hidden');
       }
     });
 
@@ -1163,7 +1461,7 @@
     }
     animatePetals();
 
-    // 3. LIVE COUNTDOWN TIMER TO 20 DECEMBER 2026, 10:45 AM IST
+    // 3. LIVE COUNTDOWN TIMER TO 20 DECEMBER 2026, 10:45 AM
     const weddingTimestamp = new Date('2026-12-20T10:45:00+05:30').getTime();
 
     function updateCountdown() {
@@ -1205,7 +1503,127 @@
     window.addEventListener('scroll', checkScrollReveal, { passive: true });
     window.addEventListener('load', checkScrollReveal);
 
-    // 5. LIGHTBOX MODAL FOR GALLERY
+    // 5. LIGHTBOX MODAL FOR GALLERY & 5-PHOTO STACKED BLUR SLIDER
+    let activeGalleryIdx = 0;
+    const totalGallerySlides = 5;
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let isSwipingGallery = false;
+
+    function updateGallerySlider() {
+      const cards = document.querySelectorAll('.gallery-slide-card');
+      const dots = document.querySelectorAll('#galleryDots button');
+
+      cards.forEach((card, idx) => {
+        const diff = (idx - activeGalleryIdx + totalGallerySlides) % totalGallerySlides;
+
+        if (diff === 0) {
+          // Active front card in sharp focus
+          card.style.zIndex = '20';
+          card.style.opacity = '1';
+          card.style.filter = 'blur(0px)';
+          card.style.transform = 'translate3d(-50%, 0px, 0) scale(1) rotate(0deg)';
+        } else if (diff === 1) {
+          // Next card peeking below & right in blur format
+          card.style.zIndex = '15';
+          card.style.opacity = '0.82';
+          card.style.filter = 'blur(3.5px)';
+          card.style.transform = 'translate3d(-41%, 28px, 0) scale(0.91) rotate(3deg)';
+        } else if (diff === 2) {
+          // Second stacked card peeking further below & behind in blur format
+          card.style.zIndex = '10';
+          card.style.opacity = '0.58';
+          card.style.filter = 'blur(5px)';
+          card.style.transform = 'translate3d(-50%, 52px, 0) scale(0.83) rotate(-1.5deg)';
+        } else if (diff === totalGallerySlides - 1) {
+          // Previous card peeking below & left in blur format
+          card.style.zIndex = '14';
+          card.style.opacity = '0.78';
+          card.style.filter = 'blur(3.5px)';
+          card.style.transform = 'translate3d(-59%, 28px, 0) scale(0.91) rotate(-3deg)';
+        } else {
+          // Deepest stacked card in blur format
+          card.style.zIndex = '5';
+          card.style.opacity = '0.35';
+          card.style.filter = 'blur(6px)';
+          card.style.transform = 'translate3d(-50%, 66px, 0) scale(0.76) rotate(0deg)';
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === activeGalleryIdx) {
+          dot.className = 'w-5 h-2 rounded-full bg-gold-dark transition-all';
+        } else {
+          dot.className = 'w-2 h-2 rounded-full bg-gold/35 transition-all';
+        }
+      });
+    }
+
+    function changeGallerySlide(step) {
+      activeGalleryIdx = (activeGalleryIdx + step + totalGallerySlides) % totalGallerySlides;
+      updateGallerySlider();
+    }
+
+    function goToGallerySlide(index) {
+      activeGalleryIdx = index;
+      updateGallerySlider();
+    }
+
+    function handleGalleryCardClick(index) {
+      if (isSwipingGallery) return;
+      if (index === activeGalleryIdx) {
+        const cards = document.querySelectorAll('.gallery-slide-card');
+        const img = cards[index].querySelector('img');
+        if (img) openLightbox(img.src);
+      } else {
+        goToGallerySlide(index);
+      }
+    }
+
+    // Touch & Mouse Drag Swipe Support on Gallery Stage
+    const galleryStage = document.getElementById('gallerySliderStage');
+    if (galleryStage) {
+      galleryStage.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        isSwipingGallery = false;
+      }, { passive: true });
+
+      galleryStage.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const delta = touchEndX - touchStartX;
+        if (Math.abs(delta) > 36) {
+          isSwipingGallery = true;
+          if (delta < 0) {
+            changeGallerySlide(1);
+          } else {
+            changeGallerySlide(-1);
+          }
+          setTimeout(() => { isSwipingGallery = false; }, 120);
+        }
+      }, { passive: true });
+
+      let mouseDownX = null;
+      galleryStage.addEventListener('mousedown', (e) => {
+        mouseDownX = e.clientX;
+        isSwipingGallery = false;
+      });
+      window.addEventListener('mouseup', (e) => {
+        if (mouseDownX === null) return;
+        const delta = e.clientX - mouseDownX;
+        mouseDownX = null;
+        if (Math.abs(delta) > 40) {
+          isSwipingGallery = true;
+          if (delta < 0) {
+            changeGallerySlide(1);
+          } else {
+            changeGallerySlide(-1);
+          }
+          setTimeout(() => { isSwipingGallery = false; }, 120);
+        }
+      });
+    }
+    updateGallerySlider();
+
     function openLightbox(src) {
       const modal = document.getElementById('lightboxModal');
       const img = document.getElementById('lightboxImg');
@@ -1223,7 +1641,7 @@
     // 6. SAVE TO GOOGLE CALENDAR
     function addToCalendar() {
       const title = encodeURIComponent("Abhijith & Reshma's Traditional Wedding Ceremony");
-      const details = encodeURIComponent("Join us to celebrate the auspicious wedding Muhurtham of Abhijith and Reshma at 10:45 AM IST (between 10:45 AM and 11:30 AM) at Hi-Tech Auditorium, Palakkad, Kerala, 678004.");
+      const details = encodeURIComponent("Join us to celebrate the auspicious wedding Muhurtham of Abhijith and Reshma (10.45am to 11.30am) at Hi-Tech Auditorium, Palakkad, Kerala, 678004.");
       const location = encodeURIComponent("HI-TECH AUDITORIUM, PALAKKAD, KERALA, 678004");
       const dates = "20261220T051500Z/20261220T083000Z";
       const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
