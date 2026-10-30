@@ -379,10 +379,12 @@
   <!-- CONTINUOUS FALLING JASMINE & ROSE PETALS CANVAS -->
   <canvas id="petalCanvas" class="fixed inset-0 pointer-events-none z-40"></canvas>
 
-  <!-- PRELOADED AUDIO ELEMENTS FOR SONG 1 AND SONG 2 -->
+  <!-- PRELOADED AUDIO ELEMENTS FOR SONG 1, SONG 2, SONG 3, AND SONG 4 -->
   <div class="hidden" aria-hidden="true">
     <audio id="audio_song1" src="song1.mp3" preload="auto" loop></audio>
     <audio id="audio_song2" src="song2.mp3" preload="auto" loop></audio>
+    <audio id="audio_song3" src="song3.mp3" preload="auto" loop></audio>
+    <audio id="audio_song4" src="song4.mp3" preload="auto" loop></audio>
   </div>
 
   <!-- MINIMALIST CIRCULAR SPEAKER ICON & DROPDOWN SONG SELECTOR (TOP-RIGHT) -->
@@ -443,6 +445,26 @@
           class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
         >
           <span>Song 2</span>
+          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="selectWeddingSong('song3')"
+          id="btn_song3"
+          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
+        >
+          <span>Song 3</span>
+          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="selectWeddingSong('song4')"
+          id="btn_song4"
+          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
+        >
+          <span>Song 4</span>
           <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
         </button>
       </div>
@@ -516,18 +538,18 @@
           </p>
         </div>
 
-        <!-- 3. "ENTER THE WEDDING" BUTTON (Elegant Golden Background with Complementary Border & Deep Espresso-Gold Letters) -->
-        <div id="enterBtnWrapper" class="w-full flex flex-col items-center mt-6">
+        <!-- 3. "ENTER THE WEDDING" BUTTON (Elegant Golden Background with Complementary Border & Deep Espresso-Gold Letters, ~20% Smaller) -->
+        <div id="enterBtnWrapper" class="w-full flex flex-col items-center mt-5">
           <button
             id="enterWeddingBtn"
             type="button"
             onclick="openInvitation()"
             style="background: linear-gradient(135deg, #F3DFA2 0%, #D4AF37 50%, #AA8018 100%);"
-            class="btn-glow w-full max-w-[270px] py-3.5 px-7 rounded-full text-[#2C1E0B] font-serif text-base sm:text-lg tracking-[0.2em] uppercase font-bold border-2 border-[#FFF6D6] flex items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer"
+            class="btn-glow w-full max-w-[216px] py-2.5 px-5 rounded-full text-[#2C1E0B] font-serif text-sm sm:text-base tracking-[0.18em] uppercase font-bold border-2 border-[#FFF6D6] flex items-center justify-center gap-2.5 active:scale-95 transition-transform cursor-pointer"
           >
             <span>ENTER THE WEDDING</span>
           </button>
-          <span class="text-[10px] uppercase tracking-[0.22em] text-champagne/75 mt-2.5">
+          <span class="text-[10px] uppercase tracking-[0.22em] text-champagne/75 mt-2">
             Tap to unveil our sacred celebration
           </span>
         </div>
@@ -535,7 +557,7 @@
         <!-- 4. REVEALED QUOTE & SCROLL CUE (Clean, Shadowless Typography with Darker Rich Golden-Amber Muhurtham Line) -->
         <div id="heroExtraDetails" class="w-full flex flex-col items-center pb-8">
           <p class="font-serif italic font-normal text-base sm:text-lg text-white max-w-xs sm:max-w-md leading-relaxed mt-2" style="text-shadow: none;">
-            "Two souls but a single thought, two hearts that beat as one."
+            "Two souls with a single thought, two hearts that beat as one."
           </p>
           <p class="font-sans text-[11px] sm:text-xs uppercase tracking-[0.26em] text-[#B8860B] font-medium mt-3" style="text-shadow: none;">
             MUHURTHAM: 10.45am to 11.30am
@@ -1103,18 +1125,19 @@
        INTERACTIVE SCRIPTS
        ========================================================================= -->
   <script>
-    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & 2-SONG DROPDOWN AUDIO SYSTEM
+    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & 4-SONG DROPDOWN AUDIO SYSTEM WITH SMOOTH FADE-IN
     let isMusicPlaying = false;
     let isMuted = false;
     let currentSongKey = 'song1';
     let synth = null;
     let melodyLoop = null;
+    let audioFadeInterval = null;
     let isInvitationOpen = false;
 
-    // 2-Song Configuration:
-    // Place song1.mp3 and song2.mp3 in your project folder.
+    // 4-Song Configuration:
+    // Place song1.mp3, song2.mp3, song3.mp3, and song4.mp3 in your project folder.
     // If an mp3 file is not yet uploaded, a distinct gentle instrumental melody plays as fallback.
-    const songIds = ['song1', 'song2'];
+    const songIds = ['song1', 'song2', 'song3', 'song4'];
     const fallbackMelodies = {
       song1: {
         bpm: 68,
@@ -1132,6 +1155,24 @@
           ['B3', 'D4', 'F#4', 'A4'],
           ['G3', 'B3', 'D4', 'F#4'],
           ['A3', 'C#4', 'E4', 'G4']
+        ]
+      },
+      song3: {
+        bpm: 64,
+        chords: [
+          ['F4', 'A4', 'C5', 'E5'],
+          ['D4', 'F4', 'A4', 'C5'],
+          ['Bb3', 'D4', 'F4', 'A4'],
+          ['C4', 'E4', 'G4', 'Bb4']
+        ]
+      },
+      song4: {
+        bpm: 72,
+        chords: [
+          ['G4', 'B4', 'D5', 'F#5'],
+          ['E4', 'G4', 'B4', 'D5'],
+          ['C4', 'E4', 'G4', 'B4'],
+          ['D4', 'F#4', 'A4', 'C5']
         ]
       }
     };
@@ -1177,11 +1218,16 @@
     }
 
     function stopAllAudioTracks() {
+      if (audioFadeInterval) {
+        clearInterval(audioFadeInterval);
+        audioFadeInterval = null;
+      }
       songIds.forEach(key => {
         const audioEl = document.getElementById('audio_' + key);
         if (audioEl) {
           audioEl.pause();
           audioEl.currentTime = 0;
+          audioEl.volume = 0;
         }
       });
       try {
@@ -1194,16 +1240,41 @@
       } catch (e) {}
     }
 
+    function fadeInHtmlAudio(audioEl, durationMs = 2400) {
+      if (audioFadeInterval) {
+        clearInterval(audioFadeInterval);
+        audioFadeInterval = null;
+      }
+      audioEl.volume = 0;
+      const steps = 30;
+      const stepTime = durationMs / steps;
+      const volumeStep = 1.0 / steps;
+      let currentStep = 0;
+
+      audioFadeInterval = setInterval(() => {
+        currentStep++;
+        const nextVol = Math.min(1.0, currentStep * volumeStep);
+        audioEl.volume = nextVol;
+        if (currentStep >= steps) {
+          clearInterval(audioFadeInterval);
+          audioFadeInterval = null;
+        }
+      }, stepTime);
+    }
+
     async function startFallbackSynthForSong(songKey) {
       try {
         await Tone.start();
         if (!synth) {
           synth = new Tone.PolySynth(Tone.Synth, {
             oscillator: { type: 'sine' },
-            envelope: { attack: 0.8, decay: 1.5, sustain: 0.4, release: 2.5 }
+            envelope: { attack: 1.2, decay: 1.5, sustain: 0.4, release: 2.5 }
           }).toDestination();
-          synth.volume.value = -16;
         }
+        // Smoothly ramp synth volume from -42 dB up to -16 dB for a gentle fade-in effect
+        synth.volume.value = -42;
+        synth.volume.rampTo(-16, 2.4);
+
         if (melodyLoop) {
           melodyLoop.stop();
           melodyLoop.dispose();
@@ -1232,12 +1303,14 @@
 
       const audioEl = document.getElementById('audio_' + songKey);
       if (audioEl) {
-        // Attempt to play the <audio> file (song1.mp3, song2.mp3, song3.mp3, song4.mp3 or uploaded file)
+        audioEl.volume = 0;
+        // Attempt to play the <audio> file (song1.mp3, song2.mp3, song3.mp3, song4.mp3) with smooth fade-in
         const playPromise = audioEl.play();
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
               isMusicPlaying = true;
+              fadeInHtmlAudio(audioEl, 2400);
               updateMusicUI(true);
             })
             .catch(() => {
