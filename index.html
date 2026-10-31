@@ -379,21 +379,18 @@
   <!-- CONTINUOUS FALLING JASMINE & ROSE PETALS CANVAS -->
   <canvas id="petalCanvas" class="fixed inset-0 pointer-events-none z-40"></canvas>
 
-  <!-- PRELOADED AUDIO ELEMENTS FOR SONG 1, SONG 2, SONG 3, AND SONG 4 -->
+  <!-- PRELOADED AUDIO ELEMENT FOR SONG 1 (DEFAULT SONG) -->
   <div class="hidden" aria-hidden="true">
     <audio id="audio_song1" src="song1.mp3" preload="auto" loop></audio>
-    <audio id="audio_song2" src="song2.mp3" preload="auto" loop></audio>
-    <audio id="audio_song3" src="song3.mp3" preload="auto" loop></audio>
-    <audio id="audio_song4" src="song4.mp3" preload="auto" loop></audio>
   </div>
 
-  <!-- MINIMALIST CIRCULAR SPEAKER ICON & DROPDOWN SONG SELECTOR (TOP-RIGHT) -->
+  <!-- MINIMALIST CIRCULAR SPEAKER ICON TOGGLE (TOP-RIGHT) -->
   <div id="musicControlWrapper" class="fixed top-4 right-4 z-50 flex flex-col items-end">
     <button
       id="musicToggle"
       type="button"
-      aria-label="Select Wedding Music"
-      title="Select Wedding Song"
+      aria-label="Toggle Mute Wedding Music"
+      title="Mute / Unmute Music"
       class="hidden w-11 h-11 rounded-full glass-card shadow-lg border border-gold/50 text-espresso items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer"
     >
       <!-- Speaker ON (Unmuted) Icon -->
@@ -409,66 +406,6 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M17 9l6 6"></path>
       </svg>
     </button>
-
-    <!-- Dropdown Menu for Selecting Song 1 & Song 2 -->
-    <div
-      id="songDropdownMenu"
-      class="hidden mt-2 w-48 rounded-2xl glass-card shadow-2xl border border-gold/50 p-2 text-left z-50"
-    >
-      <div class="px-2.5 py-1.5 border-b border-gold/25 flex items-center justify-between">
-        <span class="text-[10px] uppercase tracking-[0.2em] text-gold-dark font-semibold">Select Audio</span>
-        <button
-          type="button"
-          onclick="toggleMuteCurrentSong()"
-          id="muteActionBtn"
-          class="text-[10px] uppercase tracking-wider font-semibold text-keralaGreen hover:underline cursor-pointer"
-        >
-          Mute
-        </button>
-      </div>
-
-      <div class="py-1 space-y-1">
-        <button
-          type="button"
-          onclick="selectWeddingSong('song1')"
-          id="btn_song1"
-          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer bg-gold/20 text-espresso"
-        >
-          <span>Song 1</span>
-          <span class="song-indicator text-[10px] text-gold-dark">● Playing</span>
-        </button>
-
-        <button
-          type="button"
-          onclick="selectWeddingSong('song2')"
-          id="btn_song2"
-          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
-        >
-          <span>Song 2</span>
-          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
-        </button>
-
-        <button
-          type="button"
-          onclick="selectWeddingSong('song3')"
-          id="btn_song3"
-          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
-        >
-          <span>Song 3</span>
-          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
-        </button>
-
-        <button
-          type="button"
-          onclick="selectWeddingSong('song4')"
-          id="btn_song4"
-          class="song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80"
-        >
-          <span>Song 4</span>
-          <span class="song-indicator text-[10px] text-gold-dark hidden">● Playing</span>
-        </button>
-      </div>
-    </div>
   </div>
 
   <!-- =========================================================================
@@ -538,7 +475,7 @@
           </p>
         </div>
 
-        <!-- 3. "ENTER THE WEDDING" BUTTON (Elegant Golden Background with Complementary Border & Deep Espresso-Gold Letters, ~20% Smaller) -->
+        <!-- 3. "ENTER THE INVITE" BUTTON (Elegant Golden Background with Complementary Border & Deep Espresso-Gold Letters, ~20% Smaller) -->
         <div id="enterBtnWrapper" class="w-full flex flex-col items-center mt-5">
           <button
             id="enterWeddingBtn"
@@ -1125,7 +1062,7 @@
        INTERACTIVE SCRIPTS
        ========================================================================= -->
   <script>
-    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & 4-SONG DROPDOWN AUDIO SYSTEM WITH SMOOTH FADE-IN
+    // 1. CINEMATIC FULL-SCREEN ZOOM-OUT REVEAL & DEFAULT SONG 1 AUDIO SYSTEM WITH SMOOTH FADE-IN
     let isMusicPlaying = false;
     let isMuted = false;
     let currentSongKey = 'song1';
@@ -1134,10 +1071,10 @@
     let audioFadeInterval = null;
     let isInvitationOpen = false;
 
-    // 4-Song Configuration:
-    // Place song1.mp3, song2.mp3, song3.mp3, and song4.mp3 in your project folder.
-    // If an mp3 file is not yet uploaded, a distinct gentle instrumental melody plays as fallback.
-    const songIds = ['song1', 'song2', 'song3', 'song4'];
+    // Default Song 1 Configuration:
+    // Place song1.mp3 in your project folder.
+    // If song1.mp3 is not yet uploaded, a gentle instrumental melody plays as fallback.
+    const songIds = ['song1'];
     const fallbackMelodies = {
       song1: {
         bpm: 68,
@@ -1146,33 +1083,6 @@
           ['A3', 'C4', 'E4', 'G4'],
           ['F3', 'A3', 'C4', 'E4'],
           ['G3', 'B3', 'D4', 'F4']
-        ]
-      },
-      song2: {
-        bpm: 74,
-        chords: [
-          ['D4', 'F#4', 'A4', 'C#5'],
-          ['B3', 'D4', 'F#4', 'A4'],
-          ['G3', 'B3', 'D4', 'F#4'],
-          ['A3', 'C#4', 'E4', 'G4']
-        ]
-      },
-      song3: {
-        bpm: 64,
-        chords: [
-          ['F4', 'A4', 'C5', 'E5'],
-          ['D4', 'F4', 'A4', 'C5'],
-          ['Bb3', 'D4', 'F4', 'A4'],
-          ['C4', 'E4', 'G4', 'Bb4']
-        ]
-      },
-      song4: {
-        bpm: 72,
-        chords: [
-          ['G4', 'B4', 'D5', 'F#5'],
-          ['E4', 'G4', 'B4', 'D5'],
-          ['C4', 'E4', 'G4', 'B4'],
-          ['D4', 'F#4', 'A4', 'C5']
         ]
       }
     };
@@ -1192,7 +1102,7 @@
       document.body.classList.remove('stage-locked');
 
       // 3. Play Song 1 by default & show minimalist speaker button in top-right
-      selectWeddingSong('song1', false);
+      selectWeddingSong('song1');
       musicToggle.classList.remove('hidden');
       musicToggle.classList.add('flex');
 
@@ -1205,8 +1115,6 @@
 
     function returnToCoverScreen() {
       const heroSection = document.getElementById('heroSection');
-      const dropdown = document.getElementById('songDropdownMenu');
-      if (dropdown) dropdown.classList.add('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
       setTimeout(() => {
@@ -1296,7 +1204,7 @@
       }
     }
 
-    function selectWeddingSong(songKey, closeDropdown = true) {
+    function selectWeddingSong(songKey) {
       currentSongKey = songKey;
       isMuted = false;
       stopAllAudioTracks();
@@ -1304,7 +1212,7 @@
       const audioEl = document.getElementById('audio_' + songKey);
       if (audioEl) {
         audioEl.volume = 0;
-        // Attempt to play the <audio> file (song1.mp3, song2.mp3, song3.mp3, song4.mp3) with smooth fade-in
+        // Attempt to play song1.mp3 with smooth fade-in
         const playPromise = audioEl.play();
         if (playPromise !== undefined) {
           playPromise
@@ -1314,7 +1222,6 @@
               updateMusicUI(true);
             })
             .catch(() => {
-              // If mp3 file is not found yet, play the distinct ambient melody for this song slot
               startFallbackSynthForSong(songKey);
             });
         } else {
@@ -1322,12 +1229,6 @@
         }
       } else {
         startFallbackSynthForSong(songKey);
-      }
-
-      updateSongDropdownUI();
-      if (closeDropdown) {
-        const dropdown = document.getElementById('songDropdownMenu');
-        if (dropdown) dropdown.classList.add('hidden');
       }
     }
 
@@ -1339,62 +1240,14 @@
         updateMusicUI(false);
       } else {
         isMuted = false;
-        selectWeddingSong(currentSongKey, false);
-      }
-      updateSongDropdownUI();
-    }
-
-    function handleCustomSongUpload(event, songKey) {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
-      const audioEl = document.getElementById('audio_' + songKey);
-      if (audioEl) {
-        const objectUrl = URL.createObjectURL(file);
-        audioEl.src = objectUrl;
-        audioEl.load();
-        selectWeddingSong(songKey, false);
+        selectWeddingSong('song1');
       }
     }
 
-    function updateSongDropdownUI() {
-      songIds.forEach(key => {
-        const btn = document.getElementById('btn_' + key);
-        if (!btn) return;
-        const indicator = btn.querySelector('.song-indicator');
-        if (key === currentSongKey) {
-          btn.className = 'song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer bg-gold/25 text-espresso';
-          if (indicator) {
-            indicator.classList.remove('hidden');
-            indicator.textContent = isMuted ? '○ Paused' : '● Playing';
-          }
-        } else {
-          btn.className = 'song-option-btn w-full px-3 py-2 rounded-xl text-xs font-serif font-semibold flex items-center justify-between transition-colors cursor-pointer hover:bg-gold/10 text-espresso/80';
-          if (indicator) indicator.classList.add('hidden');
-        }
-      });
-
-      const muteBtn = document.getElementById('muteActionBtn');
-      if (muteBtn) {
-        muteBtn.textContent = isMuted ? 'Unmute' : 'Mute';
-      }
-    }
-
-    // Clicking the speaker icon opens/closes the Song 1 - 4 dropdown menu
+    // Clicking the speaker icon directly mutes/unmutes Song 1
     document.getElementById('musicToggle').addEventListener('click', (e) => {
       e.stopPropagation();
-      const dropdown = document.getElementById('songDropdownMenu');
-      if (dropdown) {
-        dropdown.classList.toggle('hidden');
-      }
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      const wrapper = document.getElementById('musicControlWrapper');
-      const dropdown = document.getElementById('songDropdownMenu');
-      if (wrapper && dropdown && !wrapper.contains(e.target)) {
-        dropdown.classList.add('hidden');
-      }
+      toggleMuteCurrentSong();
     });
 
     function updateMusicUI(playing) {
